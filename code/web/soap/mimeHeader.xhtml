@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<f:view  xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+         xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+         xmlns:p="http://primefaces.org/ui">
+
+   <p:dialog id="userMimeHeaderDia" widgetVar="userMimeHeaderWidget"
+             resizable="false" header="Add a new mime header">
+      <p:panel styleClass="panel-backgound" >
+         <p:fieldset legend="HTTP MIME Header" >
+            <h:panelGrid columns="3" id="mimeHeaderGrid">
+               <h:outputLabel value="Header " for="txtHeader"/>
+               <p:inputText id="txtHeader" rendered="true"
+                            value="#{soapRequestMimeHeaderTab.mimeHeaderBean.header}" />
+               <p:message for="txtHeader" />
+               <h:outputLabel value="Value " for="txtValue"/>
+               <p:inputText id="txtValue" rendered="true"
+                            value="#{soapRequestMimeHeaderTab.mimeHeaderBean.value}" />
+               <p:message for="txtValue" />
+            </h:panelGrid>
+         </p:fieldset>
+         <!-- -->
+         <br/>
+         <div style="text-align:  right">
+            <h:panelGroup >
+               <p:commandButton value="Add" update="@form"                       
+                                action="#{soapRequestMimeHeaderTab.addMimeHeader(soapRequestMimeHeaderTab.mimeHeaderBean)}" 
+                                oncomplete="userMimeHeaderWidget.hide();"/>
+               <p:commandButton value="Cancel" type="button" onclick="userMimeHeaderWidget.hide();" />  
+            </h:panelGroup>
+         </div>
+      </p:panel>
+   </p:dialog>
+
+
+   <p:panel id ="soapHeaderOutPutPanel" style="text-align: left">
+      <p:dataTable id="soapHeaderTable" 
+                   value="#{soapRequestMimeHeaderTab.mimeHeaderBeanList}" 
+                   var="mimeHeader" 
+                   rowIndexVar="row" >
+         <f:facet name="header" >
+            <div style="text-align: left">
+               <p:commandLink onclick="userMimeHeaderWidget.show();" title="add Mimeheader" 
+                              process="@this">
+                  <p:graphicImage value="/resources/images/table/table_row_insert.png" />
+               </p:commandLink>
+            </div>
+         </f:facet>
+         <p:column style="width: 50px; text-align: center">
+            <f:facet name="header">
+               <h:outputText value="No." />
+            </f:facet>
+            <h:outputText value="#{row+1}" />
+         </p:column>
+         <p:column style="text-align: center">
+            <f:facet name="header">
+               <h:outputText value="Header" />
+            </f:facet>
+            <h:outputText value="#{mimeHeader.header}" />
+         </p:column>
+         <p:column style="text-align: center">
+            <f:facet name="header">
+               <h:outputText value="Value" />
+            </f:facet>
+            <h:outputText value="#{mimeHeader.value}" />
+         </p:column>
+         <p:column id="deleteHeaderColumn" style="width: 60px; text-align: center">
+            <f:facet name="header">
+               <h:outputText value="Operation" />
+            </f:facet>        
+            <p:commandLink id="deleteHeaderLink" 
+                           action="#{soapRequestMimeHeaderTab.deleteMimeHeader(mimeHeader)}" 
+                           update="@form" 
+
+                           title="Delete"> 
+               <p:collector id="headerCollector" value="#{mimeHeader}" 
+                            removeFrom="#{soapRequestMimeHeaderTab.mimeHeaderBeanList}" /> 
+               <p:graphicImage value="/resources/images/table/table_row_delete.png" />
+            </p:commandLink>
+         </p:column>
+      </p:dataTable>
+   </p:panel>
+
+</f:view >

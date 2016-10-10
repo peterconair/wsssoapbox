@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<f:view  xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+         xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+         xmlns:p="http://primefaces.org/ui">
+
+   <p:outputPanel id="soapRequestFormPanel">
+      <p:dataTable value="#{soapRequestBean.soapPart.soapEnvelope.soapBody.operation.parameters}"
+                   var="parameter">
+         <f:facet name="header">
+            <div style="text-align: left">
+               <b>Operation Name :</b>
+               <h:outputText value=" #{operationName}" />
+            </div>
+         </f:facet>
+
+         <p:column style="width:80px">
+            <f:facet name="header">
+               Name
+            </f:facet>
+            <h:outputText value="#{parameter.name}" />
+         </p:column>
+         <p:column>
+            <f:facet name="header">
+               Value
+            </f:facet>        
+            <p:inputText id="requestParam" value="#{parameter.value}" size="100">
+               <p:ajax event="change"  listener="#{soapRequestForm.submitParamValue(parameter.QName,parameter.value)}" /> 
+            </p:inputText>
+         </p:column>
+         <p:column style="width:80px; text-align: center">
+            <f:facet name="header">
+               Type
+            </f:facet>
+            <h:outputText value="#{parameter.type}" />
+         </p:column>
+      </p:dataTable>
+   </p:outputPanel>
+
+</f:view>

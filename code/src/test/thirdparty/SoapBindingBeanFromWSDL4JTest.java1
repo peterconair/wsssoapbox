@@ -1,0 +1,59 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package thirdparty;
+
+import javax.wsdl.Definition;
+import javax.wsdl.factory.WSDLFactory;
+import javax.wsdl.xml.WSDLReader;
+import javax.xml.namespace.QName;
+import org.junit.After;
+import org.junit.AfterClass;
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.wsssoapbox.bean.model.soap.SoapBindingBean;
+import org.wsssoapbox.dao.soap.ISoapModelDAO;
+import org.wsssoapbox.dao.soap.SoapModelDAO;
+
+/**
+ *
+ * @author Peter
+ */
+public class SoapBindingBeanFromWSDL4JTest {
+
+   static String WSDLURL;
+   static WSDLReader wsdlReader;
+   static Definition desc;
+   SoapBindingBean soapBindingBean;
+
+   public SoapBindingBeanFromWSDL4JTest() {
+   }
+
+   @BeforeClass
+   public static void setUpClass() throws Exception {
+
+
+      WSDLURL = "http://localhost:8080/jaxws-un_symmetric/simple?wsdl";
+      wsdlReader = WSDLFactory.newInstance().newWSDLReader();
+      desc = (Definition) wsdlReader.readWSDL(WSDLURL);
+   }
+
+   // TODO add test methods here.
+   // The methods must be annotated with annotation @Test. For example:
+   //
+   @Test
+   public void hello() {
+
+      soapBindingBean = new SoapBindingBean();
+      ISoapModelDAO soapModelDAO = new SoapModelDAO();
+      
+      QName interfaceQName = new QName(WSDLURL, WSDLURL, WSDLURL);
+      QName bindingQName = new QName(WSDLURL, WSDLURL, WSDLURL);
+      QName operationQName = new QName(WSDLURL, WSDLURL, WSDLURL);
+    //  soapBindingBean = soapModelDAO.createSoapBindingBeanDoc(desc, bindingQName, interfaceQName, operationQName);
+
+   }
+}

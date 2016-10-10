@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<f:view  xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+         xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+         xmlns:p="http://primefaces.org/ui">
+
+   <p:outputPanel id="soapResOutlinePanel">
+      <p:treeTable value="#{treeTableResponseBean.root}" var="outline" 
+                   >
+         <p:column style="width:50px">
+            <f:facet name="header">
+               Name
+            </f:facet>
+            <h:outputText value="#{outline.tagName}" />
+         </p:column>
+
+         <p:column style="width:200px">
+            <f:facet name="header">
+               Value
+            </f:facet>
+            <p:inplace editor="true">
+               <p:inputText value="#{outline.value}" size="100" title="click to edit" />
+            </p:inplace>
+         </p:column>
+
+         <p:column style="width:80px">
+            <f:facet name="header">
+               Type
+            </f:facet>
+            <h:outputText value="#{outline.type}" />
+         </p:column>
+      </p:treeTable>
+   </p:outputPanel>
+
+</f:view>

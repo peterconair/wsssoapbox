@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:p="http://primefaces.org/ui">
+
+   <p:panel styleClass="panel-backgound">
+      <p:fieldset legend="Username Tokent " >    
+         <p:fieldset legend="User Info">               
+            <h:panelGrid columns="2">
+               <h:outputLabel value="Username Token " rendered="false" />
+               <p:selectBooleanCheckbox value="#{tokenForm.secureHB.usernameToken}" rendered="false" />  
+
+               <h:outputLabel value="Username " />
+               <p:inputText value="#{tokenForm.usernameTokenBean.usernameValue}"   required="true"/>
+
+               <h:outputLabel value="Password " />
+               <p:inputText value="#{tokenForm.usernameTokenBean.passwordValue}" required="true"/>
+            </h:panelGrid>  
+         </p:fieldset>
+         <p:fieldset legend="Token Info">  
+            <h:panelGrid columns="2">
+               <h:outputLabel value="Add Nounce " />
+               <p:selectBooleanCheckbox value="#{tokenForm.usernameTokenBean.nonce}" label="Adds a nounce" />  
+
+               <h:outputLabel value="Add Created " />
+               <p:selectBooleanCheckbox value="#{tokenForm.usernameTokenBean.created}" />
+
+               <h:outputLabel value="Must Understand " />
+               <p:selectBooleanCheckbox value="#{tokenForm.secureHB.mustUnderstand}" />  
+
+               <h:outputLabel value="Timestamp " />
+               <p:selectBooleanCheckbox value="#{tokenForm.secureHB.timeStamp}" />  
+
+               <h:outputLabel value="Password Type " />
+               <p:selectOneMenu value="#{tokenForm.passwordType}">  
+                  <f:selectItems value="#{tokenForm.passwordTypes}" /> 
+               </p:selectOneMenu>
+            </h:panelGrid>
+         </p:fieldset>
+
+
+
+
+         <h:outputLabel value="Output"  rendered="false"/>
+         <p:inputTextarea   id="outPutBox"  value="#{tokenForm.rawSoapMessage}" cols="100" rows="15" rendered="false"/>
+         <ui:remove>  </ui:remove>
+
+         <h:outputLabel value="Password_Digest =  " rendered="false"/>
+         <h:outputFormat value="Base64 ( SHA-1 ( nonce + created + password ) )" rendered="false"/>
+
+         <h:outputLabel value="Password_Digest =  " rendered="false"/>
+         <h:outputLabel id="pDigest"  value="#{tokenForm.passwordDigest}" rendered="false"/>
+      </p:fieldset>
+
+      <br/>
+
+
+      <div style="text-align:  right">
+         <h:panelGroup >
+            <p:commandButton value="Save" action="#{tokenForm.addUsernameToken}"  
+                             update="outPutBox,pDigest,subRequestTab"
+                             oncomplete="uNTokentDlg.hide();" /> 
+            <p:commandButton value="Cancel" type="button" onclick="uNTokentDlg.hide();" />
+         </h:panelGroup>
+      </div>
+
+   </p:panel> 
+
+</f:view>

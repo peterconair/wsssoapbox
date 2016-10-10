@@ -1,0 +1,33 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:p="http://primefaces.org/ui">
+
+   <h:head>
+      <h1 class="title ui-widget-header ui-corner-all">Log</h1>
+      <link type="text/css" rel="stylesheet" href="#{request.contextPath}/resources/css/default.css" />
+   </h:head>
+   <h:body>
+      <div class="entry">
+
+         <p:log id="log" />
+
+         <h3>Client Side API</h3>
+         <p:commandButton type="button" id="info" value="Info" onclick="PrimeFaces.info('This is an info message.')" />
+         <p:commandButton type="button" id="warn" value="Warn" onclick="PrimeFaces.warn('This is a warn message.')" />
+         <p:commandButton type="button" id="debug" value="Debug" onclick="PrimeFaces.debug('This is a debug message.')" />
+         <p:commandButton type="button" id="error" value="Error" onclick="PrimeFaces.error('This is an error message.')" />
+
+         <h3>Ajax Request</h3>
+         <h:form id="frm">
+            <h:panelGrid columns="4" cellpadding="5">
+               <h:outputLabel for="name" value="Name:" style="font-weight:bold"/>
+               <p:inputText id="name" value="#{user.firstname}" />
+               <p:commandButton value="Submit" id="submit" update="display"/>
+               <h:outputText value="#{user.lastname}" id="display" />
+            </h:panelGrid>
+         </h:form>
+      </div>
+   </h:body>
+</f:view>

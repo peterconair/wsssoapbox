@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+   <h:head>
+      <title>Tree menu Page</title>
+
+      <style type="text/css">
+         /**
+         .ui-icon-folder-open {
+            background-image:
+               url(#{request.contextPath}/resources/images/tree/folder.png);
+            background-repeat: no-repeat;
+            cursor: pointer;
+         }        
+         .ui-icon-folder-collapsed {
+            background-image:
+               url(#{request.contextPath}/resources/images/tree/document.gif);
+            background-repeat: no-repeat;
+         }
+**/
+         .documentStyle {           
+            background-image:
+               url(#{request.contextPath}/resources/images/tree/document.png);
+            background-repeat: no-repeat;
+            padding-left: 18px !important;
+            cursor: pointer;
+
+         }
+         .serviceStyle {
+            background-image:
+               url(#{request.contextPath}/resources/images/tree/service.png);
+            background-repeat: no-repeat;
+            padding-left: 18px !important;
+            cursor: pointer;
+         }
+
+         .endpointStyle {
+            background-image:
+               url(#{request.contextPath}/resources/images/tree/endpoint.png);
+            background-repeat: no-repeat;
+            padding-left: 18px !important;
+            cursor: pointer;
+         }
+
+         .operationStyle {
+            background-image:
+               url(#{request.contextPath}/resources/images/tree/operation.png);
+            background-repeat: no-repeat;
+            padding-left: 18px !important;
+            text-align: left;
+            cursor: pointer;
+         }
+         .requestStyle {
+            background-image:
+               url(#{request.contextPath}/resources/images/tree/request.gif);
+            background-repeat: no-repeat;
+            cursor: pointer;
+         }
+
+         .responseStyle {
+            background-image:
+               url(#{request.contextPath}/resources/images/tree/response.gif);
+            background-repeat: no-repeat;
+            cursor: pointer;
+         }     
+      </style>
+
+   </h:head>
+
+   <h:body>
+
+      <h:form id="treeForm" >
+         <p:outputPanel id="treePanel">
+
+            <p:tree id="treeView" value="#{treeBean.root}" var="node" 
+                    selectionMode="single" selection="#{treeBean.selectedNode}"
+                    dynamic="true" cache="false" >
+
+               <p:ajax event="select" listener="#{treeBean.onSelectEven}"
+                       update=":treeForm:selectPanel" >
+               </p:ajax>
+
+               <ui:remove >
+                  <p:treeNode expandedIcon="ui-icon ui-icon-folder-open"
+                              collapsedIcon="ui-icon-folder-collapsed">
+                     <h:outputText value="#{node}" />
+                  </p:treeNode>
+               </ui:remove>
+
+               <p:treeNode id="treeDocumentNode" type="wsdldoc">
+                  <h:outputText value="#{node.name}" styleClass="documentStyle" />
+               </p:treeNode>
+               <p:treeNode id="treeServiceNode" type="service">
+                  <h:outputText value="#{node.name}" styleClass="serviceStyle"  />
+               </p:treeNode>
+               <p:treeNode id="treeEndpointNode" type="endpoint">
+                  <h:outputText value="#{node.name}" styleClass="endpointStyle"/>
+               </p:treeNode>
+               <p:treeNode id="treeMessageNode" type="message">
+                  <h:outputText value="#{node.name}" styleClass="messageStyle"/>
+               </p:treeNode>
+               <p:treeNode id="treeOperationNode" type="operation">
+                  <h:outputText value="#{node.name}"  styleClass="operationStyle"/>
+               </p:treeNode>
+               <p:treeNode id="treeResponseNode" type="response">
+                  <h:outputText value="#{node.name}"  styleClass="responseStyle"/>
+               </p:treeNode>
+               <p:treeNode id="treeRequestNode" type="request">
+                  <h:outputText value="#{node.name}" styleClass="requestStyle"/>
+               </p:treeNode>
+            </p:tree>
+            <p:panel id="selectPanel">
+               <ui:remove> 
+                  <h:panelGrid columns="2">
+                     <h:outputText value="Selected : " />
+                     <h:outputText id="selectedTree" value="#{treeBean.selected}" />
+                  </h:panelGrid>
+               </ui:remove>
+            </p:panel>
+
+         </p:outputPanel>
+      </h:form>
+   </h:body>
+
+</html>

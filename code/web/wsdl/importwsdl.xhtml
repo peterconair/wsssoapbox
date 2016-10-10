@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+   <ui:composition template="/main/home.xhtml">
+      <ui:define name="pageTitle">
+         <h:outputText value="import wsdl document" />
+      </ui:define>
+      <ui:define name="content">
+         <h:form id="importForm" enctype="multipart/form-data">
+            <p:growl id="growl" showDetail="true"  showSummary="true" />
+            <p:panel id="wsdlImportPanel" rendered="#{pageViewController.wsdlImportPanel}">
+               <p:outputPanel id="mainPanel" rendered="#{pageViewController.mainPanel}">				
+                  <h:panelGrid columns="9">
+                     <h:outputText value="#{msgs.url}" />
+                     <p:inputText id="url"  title="Put wsdl url." size="80" value="#{wSDLImportForm.url}" />
+                     <p:watermark for="url" value="Put wsdl url." />
+
+                     <p:tooltip for="url" showEvent="focus" hideEvent="blur" />
+                     <p:commandButton id="importWSDLButton" value="ok" title="Get WSDL File"
+                                      action="#{wSDLImportForm.importWSDL}" update="@form growl" >
+                     </p:commandButton>
+
+                     <p:commandLink process="@form" title="Download WSDL File" ajax="false"
+                                    rendered="#{wSDLImportForm.wsdlDucument ne null}">
+                        <p:graphicImage value="/resources/images/download.gif" />
+                        <p:fileDownload value="#{wsdlFileDownload.file}" />
+                     </p:commandLink>
+
+                     <h:outputLink value="#{wSDLImportForm.wsdlFile}"  rendered="#{wSDLImportForm.wsdlDucument ne null}"
+                                   title="View WSDL : #{wSDLImportForm.wsdlFile}" target="#{wSDLImportForm.wsdlFile}">
+
+                        <p:graphicImage value="/resources/images/button/10.png" />
+                     </h:outputLink>      
+                     <h:outputText value="#{wSDLImportForm.wsdlFile}" rendered="false"/>
+
+                  </h:panelGrid>
+                  <p:separator />
+               </p:outputPanel>
+
+               <p:outputPanel id="includePanel" rendered="#{pageViewController.includePanel}">
+                  <ui:include src="#{treeBean.page}" />
+               </p:outputPanel>
+            </p:panel>
+
+            <p:blockUI block="wsdlImportPanel" trigger="importWSDLButton" >  
+               Parsing<br />  
+               <p:graphicImage value="/resources/images/ajaxloading.gif"/>
+            </p:blockUI>
+         </h:form>
+      </ui:define>
+   </ui:composition>
+</html>

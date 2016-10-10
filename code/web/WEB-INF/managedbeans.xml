@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://java.sun.com/xml/ns/javaee"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/beans_1_0.xsd">
+ 
+   <faces-config> 
+   
+      <managed-bean>
+         <managed-bean-name>wSDLImportForm</managed-bean-name>
+         <managed-bean-class>org.wsssoapbox.bean.backing.wsdl.WSDLImportForm</managed-bean-class>
+         <managed-bean-scope>session</managed-bean-scope>
+         <managed-property>
+            <property-name>url</property-name>
+            <value>http://www.pttplc.com/pttinfo.asmx?WSDL</value>
+         </managed-property>
+      </managed-bean>
+ 
+    
+      <managed-bean>
+         <managed-bean-name>themeSwitcherBean</managed-bean-name>
+         <managed-bean-class>org.wsssoapbox.bean.backing.ThemeSwitcherBean</managed-bean-class>
+         <managed-bean-scope>request</managed-bean-scope>
+         <managed-property>
+            <property-name>gp</property-name>
+            <value>#{guestPreferences}</value>
+         </managed-property>
+      </managed-bean>
+      
+      <managed-bean>
+         <managed-bean-name>guestPreferences</managed-bean-name>
+         <managed-bean-class>org.wsssoapbox.bean.backing.GuestPreferences</managed-bean-class>
+         <managed-bean-scope>session</managed-bean-scope>
+         <managed-property>
+            <property-name>theme</property-name>
+            <value>sunny</value>
+         </managed-property>
+      </managed-bean>
+   </faces-config>
+</beans>

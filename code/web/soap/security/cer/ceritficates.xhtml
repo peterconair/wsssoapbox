@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+   <h:head>
+      <title>Certificates </title>
+      <link type="text/css" rel="stylesheet" href="#{request.contextPath}/resources/css/default.css" />
+   </h:head>
+   <h:body>
+      <h:form id="form" enctype="multipart/form-data" prependId="true">
+         <p:growl id="certGrowl" showDetail="true" showSummary="true" />
+         <p:panel >
+
+            <p:dataTable id="certDT" value="#{certForm.trustedStoreBean.certificateBeans}" var="certBean" rowIndexVar="row" 
+                         rowKey="#{certBean.name}" selection="#{certForm.slectedCertBean}" selectionMode="single">  
+
+
+               <p:ajax event="rowSelect" listener="#{certForm.onRowSelect}"   
+                       update=":form:certPanel :form:importCert" />  
+
+               <p:column style="width: 50px; text-align: center">
+                  <f:facet name="header">
+                     <h:outputText value="No." />
+                  </f:facet>
+                  <h:outputText value="#{row+1}" />
+               </p:column>
+               <p:column style="text-align: left">
+                  <f:facet name="header">
+                     <h:outputText value="Alias Name" />
+                  </f:facet>
+                  <h:outputText value="#{certBean.aliasName}" />
+               </p:column>
+
+               <p:column style="text-align: left">
+                  <f:facet name="header">
+                     <h:outputText value="Distinguished Name" />
+                  </f:facet>
+                  <h:outputText value="#{certBean.name}" />
+               </p:column>
+            </p:dataTable>
+
+            <br/>
+
+            <p:commandButton value="Import" type="button" onclick="importCertDlg.show()" />
+
+            <p:dialog widgetVar="importCertDlg" header="Configure Certificat"  resizable="false">
+               <p:panel id="importCert" style="background-color: #f8f8f8">
+                  <p:fieldset legend="X.509 Certificate" >  
+                     <h:panelGrid columns="2" cellpadding="10">  
+                        <h:outputLabel value="Subject : " />
+                        <p:inputText value="#{certForm.uloadedCert.subjectDN}" size="100" readonly="true"/>
+
+                        <h:outputLabel value="Alias Name : " />
+                        <h:panelGrid columns="2" >
+                           <p:inputText value="#{certForm.uloadedCert.aliasName}" size="80" readonly="true"/>
+                           <p:commandButton value="User Subject" />
+                        </h:panelGrid>
+
+                        <h:outputLabel value="Public Key : " />
+                        <p:inputText value="#{certForm.uloadedCert.publicKeyValue}" size="100" readonly="true"/>
+                        <h:outputLabel value="Version : " />
+                        <p:inputText value="#{certForm.uloadedCert.version}" size="100" readonly="true"/>
+                        <h:outputLabel value="Issuer : " />
+                        <p:inputText value="#{certForm.uloadedCert.issuerDN}" size="100" readonly="true"/>
+                     </h:panelGrid>
+
+                     <h:panelGrid columns="4" title="test"  >
+                        <h:outputLabel value="Not Valid Before : " />
+                        <p:inputText value="#{certForm.uloadedCert.notBefore}" size="38" readonly="true"/>
+                        <h:outputLabel value="Not Valid After : " />
+                        <p:inputText value="#{certForm.uloadedCert.notAfter}" size="38" readonly="true"/>
+                     </h:panelGrid>
+
+                     <p:separator/>
+                     <p:fileUpload value="Import Certificate" auto="true" mode="advanced"
+                                   cancelLabel="Cacel" fileUploadListener="#{certForm.handleFileUpload}" 
+                                   sizeLimit="10000"  allowTypes="/(\.|\/)(cer|pem)$/" 
+                                   update=":form:certGrowl :form:importCert"/>
+
+                  </p:fieldset>  
+                  <br/>
+                  <h:panelGroup >
+                     <p:commandButton  value="OK" action="#{certForm.addCertificate(certForm.uloadedCert)}" 
+                                       oncomplete="importCertDlg.hide()" update=":form:certDT"/>  
+                     <p:commandButton value="Cancel" onclick="importCertDlg.hide()"/>
+                  </h:panelGroup>
+                  <br/>
+               </p:panel>
+            </p:dialog>
+
+            <p:panel id="certPanel" >
+               <p:fieldset legend="Issued To">  
+                  <h:panelGrid columns="2" cellpadding="10">  
+                     <h:outputLabel value="(DN) : " />
+                     <p:inputText value="#{certForm.certBean.issuerDN}" size="80" readonly="true"/>
+                     <h:outputLabel value="Common Name(CN) : " />
+                     <p:inputText value="#{certForm.certBean.issuerCN}" size="80" readonly="true"/>
+                     <h:outputLabel value="Organization(O) : " />
+                     <p:inputText value="#{certForm.certBean.issuerO}" size="80" readonly="true"/>
+                     <h:outputLabel value="Organization Unit(OU) : " />
+                     <p:inputText value="#{certForm.certBean.issuerOU}" readonly="true"/>
+                     <ui:remove>
+                        <h:outputLabel value="Country (C) : " />
+                        <p:inputText value="#{certForm.certBean.x500Issuer.country}" readonly="true"/> 
+                     </ui:remove>
+                     <h:outputLabel value="Serial Number : " />
+                     <p:inputText value="#{certForm.certBean.serialNumber}" size="80" readonly="true"/>
+                  </h:panelGrid>
+               </p:fieldset>  
+
+               <p:fieldset legend="Issue By">  
+                  <h:panelGrid columns="2" cellpadding="10">  
+                     <h:outputLabel value="(DN) : " />
+                     <p:inputText value="#{certForm.certBean.subjectDN}" size="80" readonly="true"/>
+                     <h:outputLabel value="Common Name(CN) : " />
+                     <p:inputText value="#{certForm.certBean.subjectCN}" size="80" readonly="true"/>
+                     <h:outputLabel value="Organization(O) : " />
+                     <p:inputText value="#{certForm.certBean.subjectO}" size="80" readonly="true"/>
+                     <h:outputLabel value="Organization Unit(OU) : " />
+                     <p:inputText value="#{certForm.certBean.subjectOU}" size="80" readonly="true"/>
+                     <h:outputLabel value="Country (C) : " />
+                     <p:inputText value="#{certForm.certBean.subjectC}" readonly="true"/>
+                  </h:panelGrid>
+               </p:fieldset>  
+
+               <p:fieldset legend="Validity">  
+                  <h:panelGrid columns="2" cellpadding="10">  
+                     <h:outputLabel value="Issue On : " />
+                     <p:inputText value="#{certForm.certBean.notBefore}" size="80" readonly="true"/>
+                     <h:outputLabel value="Expired On : " />
+                     <p:inputText value="#{certForm.certBean.notAfter}" size="80" readonly="true"/>
+                  </h:panelGrid>
+               </p:fieldset>  
+
+
+               <p:fieldset legend="Signature Info">  
+                  <h:panelGrid columns="2" cellpadding="10">  
+                     <h:outputLabel value="Signature Algorithm : " />
+                     <p:inputText value="#{certForm.certBean.sigAlgName}" size="80" readonly="true"/>
+                     <h:outputLabel value="Signature Algorithm ID : " />
+                     <p:inputText value="#{certForm.certBean.sigAlgOID}" size="80" readonly="true"/>
+                     <h:outputLabel value="Version : " />
+                     <p:inputText value="#{certForm.certBean.version}" size="80" readonly="true"/>
+                     <h:outputLabel value="Signature : " />
+                     <p:inputTextarea value="#{certForm.certBean.signature}" rows="4" cols="80"  readonly="true"/>
+                  </h:panelGrid>
+               </p:fieldset>  
+
+               <p:fieldset legend="Fingerprints">  
+                  <h:panelGrid columns="2" cellpadding="10">  
+                     <h:outputLabel value="SHA1 : " />
+                     <p:inputText value="#{certForm.certBean.fingerpintsSHA1}" size="80" readonly="true"/>
+                     <h:outputLabel value="MD5 : " />
+                     <p:inputText value="#{certForm.certBean.fingerpintsMD5}" size="80" readonly="true"/>
+                     <h:outputLabel value="Subject Key Identifier (SKI) : " />
+                     <p:inputText value="#{certForm.certBean.subKeyId}" size="80" readonly="true"/>
+
+                  </h:panelGrid>
+               </p:fieldset>  
+
+
+
+
+               <p:fieldset legend="Subject Public Key Info">  
+                  <h:panelGrid columns="2" cellpadding="10">  
+                     <h:outputLabel value="Signature Algorithm : " />
+                     <p:inputText value="#{certForm.certBean.publicKeyAlg}" size="80" readonly="true"/>
+                     <h:outputLabel value="Subject Public Key Info : " />
+                     <p:inputTextarea value="#{certForm.certBean.publicKeyValue}" rows="4" cols="80"  readonly="true"/>
+                  </h:panelGrid>
+               </p:fieldset>  
+            </p:panel>
+         </p:panel>
+      </h:form>
+   </h:body>
+</html>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:p="http://primefaces.org/ui">
+
+   <p:panel id="signaturePanel" styleClass="panel-backgound">
+      <p:fieldset legend="Signature " > 
+         <p:fieldset legend="Key Selection ">
+
+            <h:panelGrid columns="2" >
+               <h:outputLabel value="Key Store " />         
+               <p:selectOneMenu value="#{signatureForm.keyStoreName}">  
+                  <f:selectItem itemValue="" itemLabel="Select Key Store"/>
+                  <f:selectItems value="#{signatureForm.keyStores}" /> 
+                  <p:ajax   update="sigAlaisNameSelect" process="@this"
+                            listener="#{signatureForm.handleKeyStoreChange}"  />  
+               </p:selectOneMenu>
+               <h:outputLabel value="Alias Name  " />
+               <p:selectOneMenu id="sigAlaisNameSelect" value="#{signatureForm.aliasName}" >  
+                  <f:selectItem itemValue="" itemLabel="Select Alias Name"/>
+                  <f:selectItems value="#{signatureForm.aliasNames}" />   
+               </p:selectOneMenu>  
+               <h:outputLabel value="Password  " />
+               <p:inputText value="#{signatureForm.password}" required="ture" requiredMessage="Password cannot be null."/>
+            </h:panelGrid>
+         </p:fieldset>
+
+         <p:fieldset legend="Signature Criteria ">
+            <h:panelGrid columns="2">
+               <h:outputLabel value="Key Indetifier Type  " />
+               <p:selectOneMenu value="#{signatureForm.signedBean.keyIdType}">  
+                  <f:selectItem itemLabel="Select One" itemValue="" />  
+                  <f:selectItems value="#{signatureForm.keyIdTypes}"/> 
+               </p:selectOneMenu>
+               <h:outputLabel value="Signature Algorithm  " />
+               <p:selectOneMenu value="#{signatureForm.signedBean.sigAlgorithm}">  
+                  <f:selectItem itemLabel="Select One" itemValue="" />  
+                  <f:selectItems value="#{signatureForm.sigAlgorithms}" /> 
+               </p:selectOneMenu>
+
+               <h:outputLabel value="Signature Canonicalization  " />
+               <p:selectOneMenu value="#{signatureForm.signedBean.sigCononicalization}">  
+                  <f:selectItem itemLabel="Select One" itemValue="" />  
+                  <f:selectItems value="#{signatureForm.sigCononicalizations}" /> 
+               </p:selectOneMenu>
+
+            </h:panelGrid>
+         </p:fieldset>
+      </p:fieldset>
+      <br/>
+      <div style="text-align:  right">
+         <h:panelGroup >
+            <p:commandButton value="Save"  action="#{signatureForm.addSignature}" 
+                             update="subRequestTab,:messageForm:messagesGrowl" oncomplete="signatureDlg.hide()"/> 
+            <p:commandButton value="Cancel" type="button" onclick="signatureDlg.hide()"/>
+         </h:panelGroup>
+      </div>
+   </p:panel> 
+</f:view>

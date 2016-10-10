@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<f:view  xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+         xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+         xmlns:p="http://primefaces.org/ui">
+
+   <p:outputPanel id="soapReqXMLPanel">
+
+
+      <p:contextMenu for="requestMessageTxt" style="width: 210px;">  
+         <p:menuitem value="Save soap request message" icon="ui-icon-disk" 
+                     style="width: 180px" 
+                     ajax="false"> 
+            <p:fileDownload value="#{soapRequestDownload.file}" />
+         </p:menuitem>
+      </p:contextMenu>  
+      <h:panelGrid columns="3">
+         <p:inputTextarea  id="requestMessageTxt" autoResize="true"  cols="150" 
+                           value="#{soapRequestBean.soapXMLFormat}" rendered="#{not soapRequestBean.secureSoapMessage}">
+
+         </p:inputTextarea>   
+         <p:outputPanel id="secPanel" rendered="#{soapRequestBean.secureSoapMessage}">
+            <p:inputTextarea   id="msg" autoResize="true"  cols="150"
+                               value="#{soapRequestBean.secureSoapMessageValue}" >
+
+            </p:inputTextarea>
+         </p:outputPanel>
+      </h:panelGrid>
+   </p:outputPanel>
+
+</f:view>

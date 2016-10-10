@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Test Tree Page by Peter</title>
+</h:head>
+
+<h:body>
+	<h:form id="peterForm">
+		<p:outputPanel id="treePanel">
+			<p:tree id="peterTree" var="node" value="#{peterBean.root}"
+				dynamic="true" cache="false" selectionMode="single"
+				selection="#{peterBean.selectedNode}">
+				<p:ajax event="select" update="panel1 peterForm1:panel2"
+					listener="#{peterBean.onNodeSelect}" />
+				<p:treeNode>
+					<h:outputText value="#{node}" />
+				</p:treeNode>
+			</p:tree>
+		</p:outputPanel>
+		<p:outputPanel id="panel1">
+			<h:outputText value="#{peterTestBean.name}" />
+		</p:outputPanel>
+	</h:form>
+	<h:form id="peterForm1">
+		<p:outputPanel id="panel2">
+			<h:outputText value="#{peterTestBean.name}" />
+		</p:outputPanel>
+
+		<p:panel id="contentPanel1">
+			<p:commandButton value="Submit"
+				actionListener="#{peterTestBean.submit}" />
+		</p:panel>
+	</h:form>
+
+</h:body>
+
+</html>

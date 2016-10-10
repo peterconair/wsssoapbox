@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+   <h:head>
+      <title>Credit Card Payment </title>
+      <link type="text/css" rel="stylesheet" href="#{request.contextPath}/resources/css/default.css" />
+   </h:head>
+   <h:body>
+      <h:form id="form" enctype="multipart/form-data">
+         <p:growl id="certGrowl" showDetail="true" showSummary="true" />
+         <p:panel >
+            <p:fieldset legend="Payment Form" style="width: 300px;">  
+               <h:panelGrid columns="2" cellpadding="10">  
+                  <h:outputLabel value="Amount : " />
+                  <p:inputText  size="10" label="BTH" />
+                  <h:outputLabel value="Card Number : " />
+                  <p:inputText  size="20" />
+                  <h:panelGrid columns="4">
+                     <h:outputLabel value="Expiration Date : " />
+                     <p:inputText  size="10" />
+                     <h:outputLabel value="Security Code : " />
+                     <p:inputText  size="4" />
+                  </h:panelGrid>
+                  <h:outputLabel value="Name on Card : " />
+                  <p:inputText  size="10" />
+               </h:panelGrid>
+            </p:fieldset>  
+         </p:panel>
+      </h:form>
+   </h:body>
+</html>

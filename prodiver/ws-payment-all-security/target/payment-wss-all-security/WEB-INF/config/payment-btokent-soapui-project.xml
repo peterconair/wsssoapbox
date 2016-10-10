@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project name="payment-btokent" resourceRoot="" soapui-version="3.6.1" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="PaymentPortSoap11" type="wsdl" bindingName="{http://payment.javatech.com/ws/schema/oss}PaymentPortSoap11" soapVersion="1_1" anonymous="optional" definition="http://localhost:8080/payment-wss-btoken/payment/ws/payment.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:8080/payment-wss-btoken/payment/ws/payment.wsdl"><con:part><con:url>http://localhost:8080/payment-wss-btoken/payment/ws/payment.wsdl</con:url><con:content><![CDATA[<wsdl:definitions targetNamespace="http://payment.javatech.com/ws/schema/oss" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://payment.javatech.com/ws/schema/oss" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://payment.javatech.com/ws/schema/oss">
+  <wsdl:types>
+    <schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://payment.javatech.com/ws/schema/oss" xmlns="http://www.w3.org/2001/XMLSchema">
+      <element name="amount" tns:maxOccurs="1" tns:minOccurs="1">
+        <simpleType>
+          <restriction base="string">
+            <pattern value="([0-9])+"/>
+            <minLength value="1"/>
+            <maxLength value="5"/>
+          </restriction>
+        </simpleType>
+      </element>
+      <element name="cardNumber" tns:maxOccurs="1" tns:minOccurs="1">
+        <simpleType>
+          <restriction base="string">
+            <pattern value="([0-9])+"/>
+            <minLength value="13"/>
+            <maxLength value="13"/>
+          </restriction>
+        </simpleType>
+      </element>
+      <element name="securityCode" tns:maxOccurs="1" tns:minOccurs="1">
+        <simpleType>
+          <restriction base="string">
+            <pattern value="([0-9])+"/>
+            <minLength value="3"/>
+            <maxLength value="3"/>
+          </restriction>
+        </simpleType>
+      </element>
+      <element name="expirationDate" tns:maxOccurs="1" tns:minOccurs="1">
+        <simpleType>
+          <restriction base="string">
+            <pattern value="(0?[1-9]|1[012])/[0-9][0-9]"/>
+            <minLength value="5"/>
+            <maxLength value="5"/>
+          </restriction>
+        </simpleType>
+      </element>
+      <element name="nameOnCard" tns:maxOccurs="1" tns:minOccurs="1">
+        <simpleType>
+          <restriction base="string">
+            <pattern value="([A-Z]|[a-z]|\s|\.)+"/>
+            <minLength value="3"/>
+            <maxLength value="50"/>
+          </restriction>
+        </simpleType>
+      </element>
+      <element name="code" tns:maxOccurs="1" tns:minOccurs="1">
+        <simpleType>
+          <restriction base="string">
+            <enumeration value="COMPLEATED"/>
+            <enumeration value="REJECTED"/>
+          </restriction>
+        </simpleType>
+      </element>
+      <element name="description" tns:maxOccurs="1" tns:minOccurs="1">
+        <simpleType>
+          <restriction base="string"></restriction>
+        </simpleType>
+      </element>
+      <element name="referenceCode" tns:maxOccurs="1" tns:minOccurs="1">
+        <simpleType>
+          <restriction base="string"></restriction>
+        </simpleType>
+      </element>
+      <element name="paymentRequest" tns:maxOccurs="1" tns:minOccurs="1">
+        <complexType>
+          <sequence>
+            <element ref="tns:amount"/>
+            <element ref="tns:cardNumber"/>
+            <element ref="tns:expirationDate"/>
+            <element ref="tns:securityCode"/>
+            <element ref="tns:nameOnCard"/>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="paymentResponse" tns:maxOccurs="1" tns:minOccurs="1">
+        <complexType>
+          <sequence>
+            <element ref="tns:code"/>
+            <element ref="tns:description"/>
+            <element ref="tns:referenceCode"/>
+          </sequence>
+        </complexType>
+      </element>
+    </schema>
+  </wsdl:types>
+  <wsdl:message name="paymentRequest">
+    <wsdl:part element="tns:paymentRequest" name="paymentRequest"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="paymentResponse">
+    <wsdl:part element="tns:paymentResponse" name="paymentResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="PaymentPort">
+    <wsdl:operation name="payment">
+      <wsdl:input message="tns:paymentRequest" name="paymentRequest"></wsdl:input>
+      <wsdl:output message="tns:paymentResponse" name="paymentResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PaymentPortSoap11" type="tns:PaymentPort">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="payment">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="paymentRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="paymentResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="PaymentPortService">
+    <wsdl:port binding="tns:PaymentPortSoap11" name="PaymentPortSoap11">
+      <soap:address location="http://localhost:8080/payment-wss-btoken/payment/ws"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:8080/payment-wss-btoken/payment/ws</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="payment" bindingOperationName="payment" type="Request-Response" outputName="paymentResponse" inputName="paymentRequest" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/payment-wss-btoken/payment/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:oss="http://payment.javatech.com/ws/schema/oss" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="1" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+         <ds:Signature Id="Signature-15" xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+            <ds:SignedInfo>
+               <ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+               <ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+               <ds:Reference URI="#id-3">
+                  <ds:Transforms>
+                     <ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+                  </ds:Transforms>
+                  <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+                  <ds:DigestValue>5xYcfz1nFeVPS4ZbLtuj1B9bvIA=</ds:DigestValue>
+               </ds:Reference>
+            </ds:SignedInfo>
+            <ds:SignatureValue>F91ImIgN5M9oeZa/7DJhDTDxy/i8F4jg9S0fXQZYvs9zTrwKH7TnyEvlS0Iye8K+5qZ2+XhWq98s
+gCN8oHtMSpFgWDkkenjECZHhpf1jOInfnpy3uh2T0yiEU0VHw7ABrtdo/6sQd669fkeCW9J6S138
+PbUC8kuY0jfGfEk61I0=</ds:SignatureValue>
+            <ds:KeyInfo Id="KeyId-CEFF2F1C496799E450132457126279041">
+               <wsse:SecurityTokenReference wsu:Id="STRId-CEFF2F1C496799E450132457126279042" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+                  <ds:X509Data>
+                     <ds:X509IssuerSerial>
+                        <ds:X509IssuerName>CN=Client Cert,OU=Client Department,O=Client Org.,L=Client City,ST=Client State,C=TH</ds:X509IssuerName>
+                        <ds:X509SerialNumber>1324563157</ds:X509SerialNumber>
+                     </ds:X509IssuerSerial>
+                  </ds:X509Data>
+               </wsse:SecurityTokenReference>
+            </ds:KeyInfo>
+         </ds:Signature>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body wsu:Id="id-3" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+      <oss:paymentRequest>
+         <oss:amount>gero</oss:amount>
+         <oss:cardNumber>sonoras imper</oss:cardNumber>
+         <oss:expirationDate>quae</oss:expirationDate>
+         <oss:securityCode>ver</oss:securityCode>
+         <oss:nameOnCard>per auras</oss:nameOnCard>
+      </oss:paymentRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://payment.javatech.com/ws/schema/oss/PaymentPort/paymentRequest"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:requirements/><con:properties/><con:wssContainer><con:crypto><con:source>F:/Develope/sourecode/netbeans/Web_Service/Prodiver/ws-payment-btoken/src/main/webapp/WEB-INF/config/certificates/client/client.jks</con:source><con:password>123456</con:password></con:crypto><con:outgoing mustUnderstand="true"><con:name>BinaryToken</con:name><con:entry type="Signature" username="client_keystore" password="123456"><con:configuration><crypto>client.jks</crypto><keyIdentifierType>2</keyIdentifierType><signatureAlgorithm>http://www.w3.org/2000/09/xmldsig#rsa-sha1</signatureAlgorithm><signatureCanonicalization>http://www.w3.org/2001/10/xml-exc-c14n#</signatureCanonicalization><useSingleCert>false</useSingleCert></con:configuration></con:entry></con:outgoing></con:wssContainer><con:databaseConnectionContainer/><con:reporting><con:xmlTemplates/><con:parameters/></con:reporting></con:soapui-project>

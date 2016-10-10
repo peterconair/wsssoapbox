@@ -1,0 +1,1 @@
+<% response.sendRedirect("/wsssoapbox/wsdl/importwsdl.xhtml"); //response.sendRedirect("/wsssoapbox/tool/securetool.xhtml");%>

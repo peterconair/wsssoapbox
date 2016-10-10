@@ -1,0 +1,100 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui" template="/main/home.xhtml">
+
+   <ui:define name="content">
+      <h:head>
+         <h1 class="title ui-widget-header ui-corner-all">Log</h1>
+         <link type="text/css" rel="stylesheet" href="#{request.contextPath}/resources/css/default.css" />
+      </h:head>
+      <h:body>
+
+         <h:form id="logForm">
+            <br/>
+
+            <p:dataTable id="userLogTable" var="log" widgetVar="userLogTableVar" 
+                         value="#{userLogForm.userLogDataModel}" paginator="true" rows="10"  
+                         selection="#{userLogForm.selectedLogs}"   
+                         paginatorTemplate="
+                         {RowsPerPageDropdown} 
+                         {FirstPageLink} 
+                         {PreviousPageLink} 
+                         {CurrentPageReport} 
+                         {NextPageLink} 
+                         {LastPageLink}"  
+                         rowsPerPageTemplate="5,10,15"  
+                         emptyMessage="No logs found with given criteria">  
+
+               <f:facet name="header" >  
+
+                  <div style="text-align:  left" >
+                     <h:panelGroup style="" >
+                        <p:commandButton id="deleteTopLogs" style="height: 25px"
+                                         action="#{userLogForm.deleteRows}" 
+                                         update=":logForm:userLogTable"
+                                         value="Delete" icon="ui-icon-delete"/>  
+                         
+                        <p:commandButton id="refreshTopLogs" style="height: 25px; margin-left: 5px;"
+                                         update="@form :logForm:userLogTable"
+                                         action="#{userLogForm.refreshLog}" 
+                                         value="Refresh" icon="ui-icon-refresh"/>  
+                     </h:panelGroup>
+                  </div>
+                  <ui:remove>
+                     <div style="text-align:  right">
+                        <h:panelGroup >
+                           <p:outputPanel>  
+                              <h:outputText value="Search all fields : " />  
+                              <p:inputText id="globalLogFilter" 
+                                           onkeyup="userLogTableVar.filter()" 
+                                           style="width:150px;" />  
+                           </p:outputPanel>  
+                        </h:panelGroup>
+                     </div>
+                  </ui:remove>
+               </f:facet>  
+               <p:column selectionMode="multiple" style="width:18px;"/> 
+
+               <p:column headerText="Date" sortBy="#{log.date}" style="width:140px; text-align: center" resizable="true"
+                         filterBy="#{log.date}">  
+                  <h:outputText value="#{log.date}" />  
+               </p:column>  
+
+               <p:column headerText="Level" sortBy="#{log.level}" 
+                         style="width:35px; text-align: center" resizable="true"
+                         filterBy="#{log.level}"  
+                         filterOptions="#{userLogForm.levelOptions}"  
+                         filterMatchMode="exact">  
+                  <h:outputText value="#{log.level}" />  
+               </p:column>  
+               <p:column headerText="Message" sortBy="#{log.message}" resizable="true"
+                         filterStyle="width:340px"
+                         filterBy="#{log.message}">  
+                  <h:outputText value="#{log.message}" />  
+               </p:column>  
+               <p:column headerText="Logger" sortBy="#{log.logger}"  resizable="true" 
+                         filterBy="#{log.logger}">  
+                  <h:outputText value="#{log.logger}" />  
+               </p:column>
+               <f:facet name="footer">  
+                  <div style="text-align:  left">
+                     <h:panelGroup >
+                        <p:commandButton id="deleteButtomLogs" style="height: 25px"
+                                         action="#{userLogForm.deleteRows}" 
+                                         update=":logForm:userLogTable"
+                                         value="Delete" icon="ui-icon-delete"/>  
+
+                        <p:commandButton id="refreshButtomLogs" style="height: 25px;margin-left: 5px;"
+                                         update="@form :logForm:userLogTable"
+                                         action="#{userLogForm.refreshLog}" 
+                                         value="Refresh" icon="ui-icon-refresh"/>  
+                     </h:panelGroup>
+                  </div>
+
+               </f:facet> 
+            </p:dataTable>  
+         </h:form>
+
+      </h:body>
+   </ui:define>
+</ui:composition>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+   <h:head>
+      <title>TODO supply a title</title>
+   </h:head>
+   <h:body>
+      <h:form>
+         <p:outputPanel >
+            <h:panelGrid columns="2">
+
+               <h:outputLabel value="Username Token " />
+               <p:selectBooleanCheckbox value="#{tokenForm.secureHB.usernameToken}" />  
+
+               <h:outputLabel value="Username: " />
+               <p:inputText value="#{tokenForm.usernameTokenBean.usernameValue}"/>
+
+               <h:outputLabel value="Password: " />
+               <p:inputText value="#{tokenForm.usernameTokenBean.passwordValue}" />
+
+               <h:outputLabel value="Add Nounce: " />
+               <p:selectBooleanCheckbox value="#{tokenForm.usernameTokenBean.nonce}" label="Adds a nounce" />  
+
+               <h:outputLabel value="Add Created: " />
+               <p:selectBooleanCheckbox value="#{tokenForm.usernameTokenBean.created}" />
+               <p/>
+               <p:separator/>
+               <h:outputLabel value="Must Understand: " />
+               <p:selectBooleanCheckbox value="#{tokenForm.secureHB.mustUnderstand}" />  
+
+               <h:outputLabel value="Timestamp: " />
+               <p:selectBooleanCheckbox value="#{tokenForm.secureHB.timeStamp}" />  
+
+               <h:outputLabel value="Password Type: " />
+               <p:selectOneMenu value="#{tokenForm.passwordType}">  
+                  <f:selectItems value="#{tokenForm.passwordTypes}" /> 
+               </p:selectOneMenu>
+
+               <p:separator/>
+               <p:commandButton value="Add" action="#{tokenForm.add}" update="msg pDigest"/>
+
+               <h:outputLabel value="Output" />
+               <p:inputTextarea   id="msg"  value="#{tokenForm.outputBox}" cols="100" rows="15"/>
+
+               <h:outputLabel value="Password_Digest =  " />
+               <h:outputFormat value="Base64 ( SHA-1 ( nonce + created + password ) )"/>
+
+
+               <h:outputLabel value="Password_Digest =  " />
+               <h:outputLabel id="pDigest"  value="#{tokenForm.passwordDigest}"/>
+               
+
+            </h:panelGrid>
+
+         </p:outputPanel>
+      </h:form>
+   </h:body>
+</html>

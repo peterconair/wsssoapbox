@@ -1,0 +1,113 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+   <ui:define name="pageTitle">
+      <h:outputText value="Binding Details" />
+   </ui:define>
+
+   <h:head>
+
+   </h:head>
+   <h:body>
+      <ui:composition>
+         <p:outputPanel>
+            <p:panel header ="Enpoint (#{endpointBean.name})">
+               <h:panelGrid columns="2" rules="all" width="100%">
+                  <h:outputText value="Name " />
+                  <h:outputLabel value="#{endpointBean.name}" />
+                  <h:outputText value="Address " />
+                  <h:outputLabel value="#{endpointBean.address}" />
+                  <h:outputText value="Documentation " />
+                  <h:outputLabel value="#{endpointBean.documentation}" />
+                  <h:outputText value="HttpAuthenticationReaml " />
+                  <h:outputLabel value="#{endpointBean.httpAuthenticationRealm}" />
+                  <h:outputText value="HttpAutheticationScheme " />
+                  <h:outputLabel value="#{endpointBean.httpAuthenticationScheme}" />
+                  <h:outputText value="OtherElements " />
+                  <h:outputLabel value="#{endpointBean.otherElements}" />
+                  <h:outputText value="OtherAttributes " />
+                  <h:outputLabel value="#{endpointBean.otherAttributes}" />
+                  <h:outputText value="Binding " />
+                  <h:outputLabel value="#{endpointBean.binding}" />
+                  <h:outputText value="Service " />
+                  <h:outputLabel value="#{endpointBean.service}" />
+               </h:panelGrid>
+            </p:panel>
+            <p:panel id="bindingDetailPanel"
+                     header="Binding (#{bindingBean.name})">
+               <h:panelGrid columns="2" rules="all" width="100%">
+
+                  <h:outputText value="Name " />
+                  <h:outputLabel value="#{bindingBean.name}" />
+                  <h:outputText value="QName " />
+                  <h:outputLabel value="#{bindingBean.qname}" />
+                  <h:outputText value="Description " />
+                  <h:outputLabel value="#{bindingBean.documentation}" />
+                  <h:outputText value="Version " />
+                  <h:outputLabel value="#{bindingBean.version}" />
+                  <h:outputText value="Style " />
+                  <h:outputLabel value="#{bindingBean.style}" />
+                  <h:outputText value="Transport Protocol " />
+                  <h:outputLabel value="#{bindingBean.transportProtocol}" />
+                  <h:outputText value="Http Content Encoding Default " />
+                  <h:outputLabel value="#{bindingBean.httpContentEncodingDefault}" />
+                  <h:outputText value="Http Default Method " />
+                  <h:outputLabel value="#{bindingBean.httpDefaultMethod}" />
+                  <h:outputText value="Type Of Binding " />
+                  <h:outputLabel value="#{bindingBean.typeOfBinding}" />
+                  <h:outputText value="Binding Operations  " />
+                  <h:outputLabel value="#{bindingBean.bindingOperations}" />
+                  <h:outputText value="Interfaces " />
+                  <h:outputLabel value="#{bindingBean.interfaces}" />
+                  <h:outputText value="Other Attributes  " />
+                  <h:outputLabel value="#{bindingBean.otherAttributes}" />
+                  <h:outputText value="Other Elements  " />
+                  <h:outputLabel value="#{bindingBean.otherElements}" />
+
+               </h:panelGrid>
+            </p:panel>
+            <p:panel id="operationTablePanel" header="Binding Operations">
+               <p:dataTable var="opteration" rowIndexVar="row"
+                            resizableColumns="true" value="#{bindingBean.bindingOperations}">
+                  <p:column style="width:20px;text-align:center;">
+                     <f:facet name="header">
+                        <h:outputText value="No." />
+                     </f:facet>
+                     <h:outputText value="#{row +1}" />
+                  </p:column>
+                  <p:column style="width:200px;text-align:center;">
+                     <f:facet name="header">
+                        <h:outputText value="Operation Name" />
+                     </f:facet>
+                     <h:outputText value="#{opteration.name}" />
+                  </p:column>
+                  <p:column style="width:200px;text-align:center;">
+                     <f:facet name="header">
+                        <h:outputText value="Use" />
+                     </f:facet>
+                     <h:outputText value="#{opteration.input.MIMEBinding4Wsdl11}"/>
+                  </p:column>
+                  <p:column style="width:200px;text-align:center;">
+                     <f:facet name="header">
+                        <h:outputText value="MEP" />
+                     </f:facet>
+                     <h:outputText value="#{opteration.MEP}" />
+                  </p:column>
+                  <p:column style="width:350px;text-align:center;">
+                     <f:facet name="header">
+                        <h:outputText value="Action" />
+                     </f:facet>
+                     <h:outputText value="#{opteration.soapAction}" />
+                  </p:column>
+               </p:dataTable>
+            </p:panel>
+
+
+         </p:outputPanel>
+      </ui:composition>
+   </h:body>
+</html>

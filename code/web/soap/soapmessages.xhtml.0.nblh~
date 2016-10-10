@@ -1,0 +1,298 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui" template="/main/home.xhtml">
+
+   <ui:define name="pageTitle">
+      <h:outputText value="Create Soap Messages" />
+   </ui:define>
+
+   <ui:define name="content">
+      <h:form id="messageForm" >
+         <p:panel>
+            <h:panelGrid columns="5" cellspacing="10">
+               <p:commandButton value="sent request" actionListener="#{soapMessageForm.sendMessage}"  update="messageForm">
+               </p:commandButton>
+               <p:commandButton value="stop" type="reset"/>
+
+               <p:commandButton value="back" onclick="confirmation.show()" type="button"/>
+               <h:outputLabel value="Endpont Address :" />
+               <p:inputText value="#{endpointBean.address}" size="100">
+               </p:inputText>
+            </h:panelGrid>
+            <p:confirmDialog message="Are you sure back to previous page?"
+                             showEffect="bounce" hideEffect="explode"
+                             header="Cancel request" severity="alert" widgetVar="confirmation">
+               <p:commandButton value="Yes"  oncomplete="confirmation.hide()"
+                                action="#{soapMessageForm.backAction}" />
+               <p:commandButton value="Cancel" onclick="confirmation.hide()" type="button" /> 
+            </p:confirmDialog>
+         </p:panel>
+
+
+         <p:outputPanel id="messagePanel">
+            <!-- Message tab -->
+            <p:tabView id="messageTab" effect="opacity" activeIndex="#{pageViewController.messageTabIndex}">
+
+               <!-- Request Tab -->
+               <p:tab title="Request" id="requestTab">
+
+                  <p:toolbar>
+                     <p:toolbarGroup align="left">
+                        <p:commandButton type="button" value="Empty Request" image="ui-icon-document" title="Create empty request"/>
+
+                        <p:commandButton type="button" value="Load Request" image="ui-icon-folder-open" title="Load request Message from Local"/>
+
+                        <p:divider />
+
+                        <p:commandButton type="button" title="Save request message"  image="ui-icon-disk" />
+                        <p:commandButton type="button" title="Delete request message" image="ui-icon-trash"/>
+                        <p:commandButton type="button" title="Print" image="ui-icon-print" />
+                     </p:toolbarGroup>
+                  </p:toolbar>
+                  <p:tabView id="subRequestTab" effect="opacity">
+                     <p:ajax event="tabChange" listener="#{soapRequestTab.onTabChange}" update="subRequestTab"/>
+
+                     <p:tab title="Raw" id="requestRAWTab">
+                        <p:panel>     
+                           <pre name="code" class="xml" width="300" >
+POST :
+Accept-Encoding: 								
+Content-Type:#{soapRequestBean.mimeHeaders.Content-Type}
+SOAPAction:#{bindingOperationBean.soapAction}
+User-Agent:#{soapRequestBean.mimeHeaders.User-Agent}
+Host:#{soapRequestBean.mimeHeaders.Host}
+Content-Length:#{soapRequestBean.mimeHeaders.Content-Length}
+<h:outputText value="#{soapRequestBean.soapXMLFormat}" /></pre>
+                        </p:panel>
+                     </p:tab>
+                     <p:tab title="Outline" id="requestOutlineTab">
+                        <p:treeTable value="#{treeTableRequestBean.root}" var="outline" expanded="true" >
+                           <p:column style="width:50px" >
+                              <f:facet name="header" >
+                                 Name
+                              </f:facet>
+                              <h:outputText value="#{outline.tagName}" />
+                           </p:column>
+
+                           <p:column style="width:200px">
+                              <f:facet name="header">
+                                 Value
+                              </f:facet>
+                              <p:inplace editor="true">
+                                 <p:inputText value="#{outline.value}" size="100" title="click to edit" />
+                              </p:inplace>
+                           </p:column>
+
+                           <p:column >
+                              <f:facet name="header">
+                                 Type
+                              </f:facet>
+                              <h:outputText value="#{outline.type}" />
+                           </p:column>
+                        </p:treeTable>
+                     </p:tab>
+
+                     <p:tab title="Form" id="requestFormTab">
+
+                        <p:dataTable value="#{soapRequestBean.soapPart.soapEnvelope.soapBody.operation.parameters}"
+                                     var="parameter">
+                           <f:facet name="header">
+                              <h:outputText value="#{operationName}" />
+                           </f:facet>
+                           <p:column style="width:80px">
+                              <f:facet name="header">
+                                 Name
+                              </f:facet>
+                              <h:outputText value="#{parameter.name}" />
+                           </p:column>
+                           <p:column>
+                              <f:facet name="header">
+                                 Value
+                              </f:facet>
+                              <p:inplace editor="true" >
+                                 <p:inputText value="#{parameter.value}" size="100" />
+                              </p:inplace>
+                           </p:column>
+                           <p:column style="width:80px">
+                              <f:facet name="header">
+                                 Type
+                              </f:facet>
+                              <h:outputText value="#{parameter.type}" />
+                           </p:column>
+                        </p:dataTable>
+                     </p:tab>
+
+                     <p:tab title="XML" id="requestXMLTab">
+                        <h:panelGrid columns="1">
+
+                           <p:inputTextarea style="width:650px;height:200px;" effectDuration="400"
+                                            value="#{soapRequestBean.soapXMLFormat}">
+                              <p:ajax event="keyup" />
+                           </p:inputTextarea>                       
+                        </h:panelGrid>
+                     </p:tab>
+
+
+                     <p:tab title="Attache File" id="attacheFileTab">
+                        <h:form id="attacheForm" enctype="multipart/form-data">  
+                           <p:outputPanel id="soapAttachmentPanel">
+                              <p:dataTable id ="soapAttachmentDataTable" value="#{soapRequestBean.soapAttachments}" var="acttache">
+                                 <p:column style="text-align: center">
+                                    <f:facet name="header">
+                                       <h:outputText value="Content ID" />
+                                    </f:facet>
+                                    <h:outputText value="#{acttache.attachementID}" />
+                                 </p:column>
+                                 <p:column>
+                                    <f:facet name="header">
+                                       <h:outputText value="Nmae" />
+                                    </f:facet>
+                                    <h:outputText value="#{acttache.name}" />
+                                 </p:column>
+                                 <p:column>
+                                    <f:facet name="header">
+                                       <h:outputText value="Content-Type" />
+                                    </f:facet>
+                                    <h:outputText value="#{acttache.contentType}" />
+                                 </p:column>
+                                 <p:column>
+                                    <f:facet name="header">
+                                       <h:outputText value="Size" />
+                                    </f:facet>
+                                    <h:outputText value="#{acttache.size}" />
+                                 </p:column>
+                                 <p:column>
+                                    <f:facet name="header">
+                                       <h:outputText value="Operation" />
+                                    </f:facet>        
+                                    <p:commandButton  update="messageForm:attacheForm:soapAttachmentDataTable" process="@this" image="ui-icon ui-icon-close" title="Delete"> 
+                                       <p:collector id="attatcheCollector" value="#{acttache}" 
+                                                    removeFrom="#{soapRequestBean.soapAttachments}" /> 
+                                    </p:commandButton>
+                                 </p:column>
+                              </p:dataTable>
+                           </p:outputPanel>
+                           <p:growl id="messages" showDetail="true"/>
+
+                           <p:fileUpload fileUploadListener="#{fileUploadController.handleFileUpload}"
+                                         mode="advanced"
+                                         update="messages messageForm:attacheForm:soapAttachmentDataTable"
+                                         auto="true"
+                                         sizeLimit="1000000"
+                                         allowTypes="png,gif,jpg"
+                                         />
+
+                           <p:confirmDialog message="Are you sure?" width="200"  
+                                            showEffect="explode" hideEffect="explode"  
+                                            header="Confirm" severity="alert" widgetVar="confirmation">  
+
+                              <p:commandButton value="Yes sure" update=":attacheForm:soapAttachmentPanel" oncomplete="confirmation.hide()">  
+                                 <p:collector id="attatcheCollector" value="#{acttache}" 
+                                              removeFrom="#{soapRequestBean.soapAttachments}" />
+                              </p:commandButton>
+                              <p:commandButton value="Not yet" onclick="confirmation.hide()" type="button" />  
+
+                           </p:confirmDialog> 
+
+                        </h:form>
+                     </p:tab>
+
+
+                     <p:tab title="WS-Security" id="WSSecurityTab">
+
+
+                     </p:tab>
+                  </p:tabView>
+               </p:tab>
+               <!-- End Request tab -->
+
+
+               <!--  Response Tab -->
+               <p:tab title="Response" id="responseTab" rendered="#{pageViewController.responseTab}">
+
+                  <p:tabView id="subResponseTab" effect="opacity" dynamic="true">
+                     <p:ajax event="tabChange" listener="#{soapResponseTab.onTabChange}" />
+
+                     <p:tab title="Raw" id="reponseRAWTab">
+                        <p:panel>     
+                           <pre name="code" class="xml" width="300" >
+POST :
+Accept-Encoding:
+Content-Type: #{soapResponseBean.mimeHeaders.Content-Type}
+SOAPAction: #{bindingOperationBean.soapAction}
+User-Agent: #{soapResponseBean.mimeHeaders.User-Agent}
+Host: #{soapResponseBean.mimeHeaders.Host}
+Content-Length: #{soapResponseBean.mimeHeaders.Content-Length}
+<h:outputText value="#{soapResponseBean.soapTextFormat}" />
+                           </pre>
+                        </p:panel>
+                     </p:tab>                    
+                     <p:tab title="Prety XML" id="reponsePretyXMLTab">
+                        <p:panel>     
+                           <pre name="code" class="xml" width="300" >POST :<h:outputText value="xxxxxx" />
+POST :
+Accept-Encoding:
+Content-Type: #{soapResponseBean.mimeHeaders.Content-Type}
+SOAPAction: #{bindingOperationBean.soapAction}
+User-Agent: #{soapResponseBean.mimeHeaders.User-Agent}
+Host: #{soapResponseBean.mimeHeaders.Host}
+Content-Length: #{soapResponseBean.mimeHeaders.Content-Length}
+<h:outputText value="#{soapResponseBean.soapXMLFormat}" />
+                           </pre>
+                        </p:panel>
+                     </p:tab>
+
+
+                     <p:tab title="Outline" id="responseOutlineTab" rendered="#{responseOutlineTab}">
+                        <p:treeTable value="#{treeTableResponseBean.root}" var="outline" expanded="true"
+                                     >
+                           <p:column style="width:50px">
+                              <f:facet name="header">
+                                 Name
+                              </f:facet>
+                              <h:outputText value="#{outline.tagName}" />
+                           </p:column>
+
+                           <p:column style="width:200px">
+                              <f:facet name="header">
+                                 Value
+                              </f:facet>
+                              <p:inplace editor="true">
+                                 <p:inputText value="#{outline.value}" size="100" title="click to edit" />
+                              </p:inplace>
+                           </p:column>
+
+                           <p:column style="width:80px">
+                              <f:facet name="header">
+                                 Type
+                              </f:facet>
+                              <h:outputText value="#{outline.type}" />
+                           </p:column>
+                        </p:treeTable>
+                     </p:tab>
+
+                     <p:tab title="XML" id="responseXMLTab">
+                        <h:panelGrid columns="2">
+                           <p:inputTextarea style="width:550px;height:200px;" effectDuration="400"
+                                            value="#{soapResponseBean.soapXMLFormat}">
+                              <p:ajax event="keyup" update="out1" />
+                           </p:inputTextarea>
+                        </h:panelGrid>
+                     </p:tab>
+
+
+
+                  </p:tabView>
+               </p:tab>
+               <!-- End Response Tab -->
+
+            </p:tabView>
+            <!-- End message tab -->
+         </p:outputPanel>
+      </h:form>
+   </ui:define>
+</ui:composition>

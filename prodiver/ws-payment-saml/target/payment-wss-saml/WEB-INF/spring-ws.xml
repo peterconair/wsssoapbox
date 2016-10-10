@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:sws="http://www.springframework.org/schema/web-services"
+       xmlns:oxm="http://www.springframework.org/schema/oxm"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/web-services 
+       http://www.springframework.org/schema/web-services/web-services-2.0.xsd
+       http://www.springframework.org/schema/context 
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       http://www.springframework.org/schema/oxm
+       http://www.springframework.org/schema/oxm/spring-oxm-1.5.xsd">
+
+
+
+    <description>
+        This web application context contains Spring-WS beans. The beans defined in this context are automatically
+        detected by Spring-WS, similar to the way Controllers are picked up in Spring Web MVC.
+    </description>
+ 
+ 	<!--
+		We have two important URLs here: 
+		WSDL: http://localhost:8080/{projectName}/{root-path}/ws/{bean-name}.wsdl 
+		Example: http://localhost:8080/spring-ws/payment/ws/payment.wsdl
+		
+		Endpoint: http://localhost:8080/{projectName}/{root-path}/ws
+		Example: http://localhost:8080/spring-ws/payment/ws
+		
+		These urls are based on the root path declared in the web.xml and in the SimpleUrlHandlerMapping
+	-->
+	
+ 	<!-- Uses the latest feature from 2.0.0 RC2. 
+	 	Enables @Endpoint and related Spring-WS annotations. See Spring WS Reference 5.4-->
+    <sws:annotation-driven />
+	 
+	 <!-- Uses the latest feature from 2.0.0 RC2. 
+	 	Enables interceptor endpoints. See Spring WS Reference 5.5.2
+	 	Here we have an interceptor that validates XML request and a logger
+	    -->
+    <sws:interceptors>
+        <bean id="loggingInterceptor" class="org.springframework.ws.server.endpoint.interceptor.PayloadLoggingInterceptor"/>   
+   
+        <bean id="validatingInterceptor"  class="org.springframework.ws.soap.server.endpoint.interceptor.PayloadValidatingInterceptor">
+            <property name="schema" value="/WEB-INF/payment.xsd"/>
+            <property name="validateRequest" value="false"/>
+            <property name="validateResponse" value="false"/>
+        </bean>
+    </sws:interceptors>
+
+    <bean id="serverKeyStore" class="org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean">
+        <property name="keyStorePassword" value="123456"/>
+        <property name="keyStoreLocation" value="/WEB-INF/config/certificates/server/server.jks"/>
+    </bean>
+
+    <bean id="keyStoreCallbackHandler" class="org.springframework.ws.soap.security.wss4j.callback.KeyStoreCallbackHandler">
+        <property name="privateKeyPassword" value="123456"/>
+    </bean>
+
+	<!-- Uses the latest feature from 2.0.0 RC2. 
+	 	Enables publishing of wsdl. See Spring WS Reference 3.7
+	 	For dynamic location transformation to work, a special parameter must be added to the web.xml.
+	 	The locationUri here has no use when integrated with Spring MVC because 
+	 	it has been overriden by the SimpleUrlHandlerMapping -->
+    <sws:dynamic-wsdl id="payment"
+	    portTypeName="PaymentPort"                                                         
+	    locationUri="http://localhost:8080/payment-wss-saml/payment/ws"                                                       
+	    targetNamespace="http://payment.javatech.com/ws/schema/oss">                               
+        <sws:xsd location="/WEB-INF/payment.xsd"/>                                                  
+    </sws:dynamic-wsdl>
+
+	<!--  Our mashaller. You can use any marshaller you want.
+	 For info on how to use Castor, see http://www.castor.org/xml-mapping.html#2.1-Marshalling-Behavior -->
+    <bean id="castorMarshaller" class="org.springframework.oxm.castor.CastorMarshaller"
+    	p:mappingLocation="/WEB-INF/castor-mapping.xml" />
+ 
+ 	<!-- Normally we use the GenericMarshallingMethodEndpointAdapter however if you read the Spring WS 2.0 API for this adapter:
+ 	 "Deprecated. as of Spring Web Services 2.0, in favor of DefaultMethodEndpointAdapter and MarshallingPayloadMethodProcessor."
+ 	 See http://static.springsource.org/spring-ws/sites/2.0/apidocs/org/springframework/ws/server/endpoint/adapter/GenericMarshallingMethodEndpointAdapter.html
+ 	 
+ 	 So we have to implement using the recommended implementation. The advantage of these two classes is that
+ 	 we have a pluggable adapter. For more info, check the Spring WS 2.0 API and its source code.
+ 	 -->
+    <bean id="marshallingPayloadMethodProcessor" class="org.springframework.ws.server.endpoint.adapter.method.MarshallingPayloadMethodProcessor">
+        <constructor-arg ref="castorMarshaller"/>
+        <constructor-arg ref="castorMarshaller"/>
+    </bean>
+	
+        
+    <bean id="defaultMethodEndpointAdapter" class="org.springframework.ws.server.endpoint.adapter.DefaultMethodEndpointAdapter">
+        <property name="methodArgumentResolvers">
+            <list>
+                <ref bean="marshallingPayloadMethodProcessor"/>
+            </list>	
+        </property>
+        <property name="methodReturnValueHandlers">
+            <list>
+                <ref bean="marshallingPayloadMethodProcessor"/>
+            </list>
+        </property>
+    </bean>
+</beans>

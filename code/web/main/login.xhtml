@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+   <h:head>
+      <title>Login</title>
+      <meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+      <link rel="shortcut icon" href="#{request.contextPath}/resources/images/favicon.ico" type="image/x-icon" />
+      <link type="text/css" rel="stylesheet" href="#{request.contextPath}/resources/css/default.css" />
+      <style type="text/css">
+         *{ 
+            margin: 0; padding: 0; 
+         }
+         body{
+            background: url('#{request.contextPath}/resources/images/ui/login_bg0.png') top center no-repeat #c4c4c4; 
+            color: #3a3a3a;  
+         }
+
+         .clear{
+            clear: both; 
+         }
+
+         form{ 
+            width: 406px; margin: 170px auto 0; 
+         }
+
+         legend{ 
+            display: none; 
+         }
+
+         fieldset{ 
+            border: 0; 
+         }
+
+         label	{
+            width: 115px; 
+            text-align: right; 
+            float: left; 
+            margin: 0 10px 0 0; 
+            padding: 9px 0 0 0; 
+            font-size: 15px; 
+         }
+
+         input	{ 
+            width: 220px; 
+            height: 18px;
+            display: block; 
+            padding: 4px; 
+            margin: 0 0 10px 0; 
+            font-size: 18px;
+            color: #3a3a3a; 
+            font-family: Georgia, serif;}
+         input[type=checkbox]{ 
+            width: 20px; 
+            margin: 0; 
+            display: inline-block; 
+         }
+         .button{ 
+            background: url('#{request.contextPath}/resources/images/ui/button_bg.png') repeat-x top center; 
+            border: 1px solid #999;
+            -moz-border-radius: 5px; 
+            padding: 2px; 
+            color: black; 
+            font-weight: bold;
+            -webkit-border-radius: 5px; 
+            font-size: 13px;  
+            width: 80px; 
+         }
+         .button:hover{
+            background: white; 
+            color: black; 
+         }
+
+      </style>
+
+   </h:head>
+   <h:body >     
+
+      <p:ajaxStatus style="width:16px;height:16px;" id="ajaxStatusPanel">  
+         <f:facet name="start">  
+            <h:graphicImage value="/resources/images/loading.gif" />  
+         </f:facet>  
+         <f:facet name="complete">  
+            <h:outputText value="" />  
+         </f:facet>  
+      </p:ajaxStatus> 
+
+      <h:form id="loginForm">
+
+         <p:growl id="growlLogin" />
+         <fieldset>
+            <legend>Log in</legend>
+            <h:outputLabel value="Username " for="username"/>
+            <p:inputText id="username" value="#{loginForm.username}" 
+                         required="true" 
+                         requiredMessage="Enter your username"/> 
+            <div class="clear"/>
+            <br />
+            <h:outputLabel value="Password " for="password"/>
+            <p:password id="password" value="#{loginForm.password}" 
+                         required="true" 
+                         requiredMessage="Enter your password"/> 
+            <br />
+            <br />
+            <div class="clear"/>
+            <p:commandButton value="Log in" 
+                             action="#{loginForm.login}" 
+                             update="growlLogin loginMsgs"
+                             style="margin: -15px 0 0 273px;" 
+                             styleClass="button" 
+                             icon="ui-icon-check" />
+
+            <p:messages id="loginMsgs" />
+         </fieldset>
+      </h:form>
+
+   </h:body>	
+</html>

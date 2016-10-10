@@ -1,0 +1,81 @@
+<!DOCTYPE HTML > 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title>Web service security monitoring tool installer.</title>
+        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />          
+        <link type="text/css" rel="stylesheet" href="#{request.contextPath}/resources/css/default.css" />
+    </h:head>
+    <h:body>
+
+
+        <p:layout fullPage="true">
+            <p:layoutUnit id="top" position="north" size="60"  >
+                <div>
+                    <h1>Database installer</h1>
+                    <p:ajaxStatus style="width:20px;height:20px;display:block;position:fixed;right:0;top:0; margin-right: 40px">
+                        <f:facet name="start">  
+                            <h:graphicImage value="/resources/images/loading.gif" />  
+                        </f:facet>  
+                        <f:facet name="complete">  
+                            <h:outputText value="" />  
+                        </f:facet>  
+                    </p:ajaxStatus> 
+                </div>
+            </p:layoutUnit>
+            <p:layoutUnit id="center" position="center"  
+                          style="padding:0;" rendered="true">
+                <h:form>
+                    <p:growl />
+                    <p:panel id="panel" header="Database Information"  style="width:100%; margin-bottom:10px;">  
+                        <h:panelGrid id="grid" columns="3" style="text-align: left;"> 
+                            <f:facet name="header">  
+
+                            </f:facet>  
+                            <h:outputText  value="Database Server " />
+                            <p:inputText id ="dbServer" size="25" value="#{installer.database.dbServer}" 
+                                         required="true" 
+                                         requiredMessage="Please input database server."/> 
+                            <p:message for="dbServer"/>
+                            <h:outputText value="Port " />
+                            <p:inputText id ="port" size="10" 
+                                         value="#{installer.database.port}" 
+                                         required="true"  requiredMessage="Please input port number."/>
+                            <p:message for="port"/>
+                            <h:outputText value="Database Name "/>
+                            <p:inputText id ="dbName" value="#{installer.database.dbName}" readonly="true" disabled="true"
+                                         required="true" 
+                                         requiredMessage="Please input database name."/>
+                            <p:message for="dbName"/>
+                            <h:outputText value="Username "/>
+                            <p:inputText id ="username" value="#{installer.database.username}" 
+                                         required="true" 
+                                         requiredMessage="Please input username."/>
+                            <p:message for="username"/>
+                            <h:outputText value="Password "/>
+                            <p:inputText id="password" value="#{installer.database.password}"  
+                                         required="true" 
+                                         requiredMessage="Please input password."/>
+                            <p:message for="password"/>
+                            <p/>
+                            <p:commandButton  value="Install" action="#{installer.installDB}" disabled="#{installer.isDBCreated}"
+                                              update="@form"/>
+       
+       
+                            <p:commandLink  
+                                           value="http://localhost:9090/wsssoapbox" 
+                                           rendered="#{installer.isDBCreated ne false}"/>
+                            <p/>
+
+                        </h:panelGrid>
+                    </p:panel>
+                </h:form>
+
+            </p:layoutUnit>
+        </p:layout>
+    </h:body>
+</html>

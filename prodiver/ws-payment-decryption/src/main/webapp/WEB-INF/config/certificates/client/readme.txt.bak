@@ -1,0 +1,13 @@
+Client Keystore
+
+Provider : SUN
+Key Store Tyep :JKS
+file name : client.jks
+Alias Name : client_keystore
+Password : 123456
+contain : 
+1. private key
+2. public key (own certificate)
+
+Trust Certificate :
+Alias Name : server

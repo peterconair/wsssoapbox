@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+	version="2.0">
+   <application>
+      <resource-bundle>
+         <base-name>org.wsssoapbox.webapp.resources.messages</base-name>
+         <var>msgs</var>
+      </resource-bundle>
+   </application>
+  
+   <lifecycle>
+      <phase-listener>org.wsssoapbox.webapp.listener.LoggingPhaseListener</phase-listener>
+   </lifecycle>     
+   <!--  -->
+   <lifecycle>
+      <phase-listener>org.wsssoapbox.webapp.listener.AuthenticationPhaseListener</phase-listener>
+   </lifecycle>     
+  
+</faces-config>

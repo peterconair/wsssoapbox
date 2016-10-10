@@ -1,0 +1,32 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:p="http://primefaces.org/ui">
+
+   <p:outputPanel id="preLoggingPanel">
+      <b> <h:outputText value="Logging" /> </b>
+      <p:separator/>
+      <h:panelGrid columns="1" > 
+         <h:outputText value="This is set logging level use in Application" />
+
+         <p:selectOneMenu >
+            <f:selectItem itemLabel="WSDL" itemValue="WSDL" />
+            <f:selectItem itemLabel="Logging" itemValue="Logging" />
+         </p:selectOneMenu>
+
+
+         <p:selectOneMenu value="#{loggingControlForm.logging}">  
+            <f:selectItems value="#{loggingControlForm.loggings}" > 
+            </f:selectItems>
+         </p:selectOneMenu> 
+
+         <ui:remove>
+            <p:ajax  listener="#{loggingControlForm.handleSelect(loggingControlForm.logging)}" 
+                     event="select" update="loggingSelect preLoggingPanel"/>
+         </ui:remove>
+
+         <h:outputText id="loggingSelect" value="#{loggingControlForm.logging}" />
+      </h:panelGrid>
+   </p:outputPanel>
+</f:view>

@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core" 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+   <f:view contentType="text/html">
+
+      <h:head>
+         <title><ui:insert name="pageTitle" /></title>
+         <meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+         <link rel="shortcut icon" href="#{request.contextPath}/resources/images/favicon.ico" type="image/x-icon" />
+       <!--  <meta http-equiv="refresh" content="#{session.maxInactiveInterval};url=#{request.contextPath}/main/login.xhtml"/>--> 
+         <link type="text/css" rel="stylesheet" href="#{request.contextPath}/resources/css/default.css" />
+         <link type="text/css" rel="stylesheet"
+               href="#{request.contextPath}/syntaxhighlighter/styles/syntaxhighlighter.css" />
+         <style type="text/css">
+            .ui-widget {
+               font-size: 75%;
+            }
+
+            .themeMenu {
+               overflow: auto;
+               height: 300px;
+               width: 200px;
+            }
+
+            .ui-layout-north {
+               z-index:20 !important;
+               overflow:visible !important;;
+            }
+
+            .ui-layout-north .ui-layout-unit-content {
+               overflow:visible !important;
+            }
+         </style>
+
+      </h:head>
+      <h:body>
+         <p:layout id="mainLayout" fullPage="true" rendered="#{treeBean.root  ne null}">
+            <p:layoutUnit  id ="menuLayoutUnit" position="north" size="50" >
+
+               <ui:insert name="header" />
+               <ui:insert name="stutus">
+                  <p:outputPanel id="ajaxPanel">
+                     <p:ajaxStatus style="width:30px;height:30px;display:block;position:fixed;right:1;top:0;">
+                        <f:facet name="start">
+                           <p:graphicImage value="/resources/images/loading.gif" />
+                        </f:facet>
+
+                        <f:facet name="complete">
+                           <h:outputText value="" />
+                        </f:facet>
+                     </p:ajaxStatus>
+                  </p:outputPanel>
+               </ui:insert>
+            </p:layoutUnit>
+
+            <p:layoutUnit id="leftLayoutUnit" position="west" size="300" header="Navigator" 
+                          style="padding:0;" resizable="true" 
+                          rendered="#{treeBean.root  ne null}"
+                          closable="true" collapsible="true"  minSize="200" 
+                          collapsed="#{pageViewController.navigatorCollapse}" >
+               <ui:insert name="navigator" />
+            </p:layoutUnit>
+
+            <p:layoutUnit id="center" position="center"  style="padding:0;" >
+               <ui:insert name="content" />
+            </p:layoutUnit>
+
+            <p:layoutUnit id="buttom" position="south" size="80" resizable="true" closable="true" collapsible="true"
+                          header="Logging"  rendered="#{preference.logRendered}">
+               <ui:insert name="footer" />
+               <ui:debug hotkey="d" />
+            </p:layoutUnit>
+
+         </p:layout>
+
+      </h:body>
+
+      <ui:insert name="highlight">
+         <script language="javascript" src="#{request.contextPath}/syntaxhighlighter/scripts/shCore.js"></script>
+         <script language="javascript" src="#{request.contextPath}/syntaxhighlighter/scripts/shBrushXml.js"></script>
+      </ui:insert>
+      <ui:remove>
+         <script language="javascript">
+			dp.SyntaxHighlighter.ClipboardSwf = '#{request.contextPath}/syntaxhighlighter/scripts/clipboard.swf';
+			dp.SyntaxHighlighter.HighlightAll('code');
+         </script>
+      </ui:remove>
+   </f:view>
+</html>

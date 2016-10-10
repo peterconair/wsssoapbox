@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<f:view  xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+         xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+         xmlns:p="http://primefaces.org/ui">
+
+   <p:outputPanel id="soapReqRawPanel">
+      <script language="javascript">
+			dp.SyntaxHighlighter.ClipboardSwf = '#{request.contextPath}/syntaxhighlighter/scripts/clipboard.swf';
+			dp.SyntaxHighlighter.HighlightAll('rawRequestPre');
+      </script>
+
+      <p:panel>     
+         <pre  name="rawRequestPre" class="xml" width="300" >
+#{soapRequestBean.requestHeader}
+<h:outputText value="#{soapRequestBean.soapXMLFormat}" rendered="#{not soapRequestBean.secureSoapMessage}"/>
+<h:outputText value="#{soapRequestBean.secureSoapMessageValue}" rendered="#{soapRequestBean.secureSoapMessage}"/> 
+<h:outputText value="#{soapRequestBean.soapAttachmentValue}" rendered="#{soapRequestBean.soapAttachment}"/>  
+         </pre>        
+
+      </p:panel>
+   </p:outputPanel>
+
+</f:view>

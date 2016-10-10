@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+
+   <ui:define name="pageTitle">
+      <h:outputText value="WSDL Details" />
+   </ui:define>
+   <h:head>
+
+   </h:head>
+
+   <h:body>
+      <h:form id="wsdlDetailForm">
+         <p:outputPanel>
+            <p:panel id="servicePanel" header="WSDL Service">
+               <h:panelGrid columns="2">
+                  <h:outputText value="WSDL URL " />
+                  <h:outputLabel value="#{wSDLImportForm.wsdlDucument.name}" />
+                  <h:outputText value="Version " />
+                  <h:outputLabel value="#{wSDLImportForm.wsdlDucument.version}" />
+                  <h:outputText value="Namespace " />
+                  <h:outputLabel value="#{wSDLImportForm.wsdlDucument.targetNamespace}" />
+               </h:panelGrid>
+            </p:panel>
+
+            <br />
+
+            <p:accordionPanel id="wsdlDetailPanel" activeIndex="0" >
+               <p:tab title="Type">
+                  <h:panelGrid columns="2" rules="all" width="100%">
+
+                     <h:outputText value="QName " />
+                     <h:outputLabel value="#{wsdlDucument.type.qname}" />
+                     <h:outputText value="Documentation " />
+                     <h:outputLabel value="#{wsdlDucument.type.documentation}" />
+                     <h:outputText value="ImportSchema " />
+                     <h:outputLabel value="#{wsdlDucument.type.importSchemas}" />
+                     <h:outputText value="Schema " />
+                     <h:outputLabel value="#{wsdlDucument.type.schemas}" />
+                     <h:outputText value="Other Element " />
+                     <h:outputLabel value="#{wsdlDucument.type.otherElements}" />
+
+                  </h:panelGrid>
+               </p:tab>
+               <ui:remove>      </ui:remove>
+                  <p:tab title="Bindings">
+                     <p:panel id="bindingDocumentTablePanel">
+                        <p:dataTable var="bindingDocument" rowIndexVar="row" resizableColumns="true" value="#{wsdlDucument.bindings}">
+                           <p:column style="width:20px;text-align:center;">
+                              <f:facet name="header">
+                                 <h:outputText value="No." />
+                              </f:facet>
+                              <h:outputText value="#{row +1}" />
+                           </p:column>
+                           <p:column style="width:200px;text-align:center;">
+                              <f:facet name="header">
+                                 <h:outputText value="Binding Name" />
+                              </f:facet>
+                              <h:outputText value="#{bindingDocument.name}" />
+                           </p:column>
+
+                        </p:dataTable>
+                     </p:panel>
+                  </p:tab>
+
+                  <p:tab title="Interfaces">
+                     <p:panel id="interfaceDocumentTablePanel">
+                        <p:dataTable var="interfaceService" rowIndexVar="row" resizableColumns="true" value="#{wsdlDucument.interfaces}">
+                           <p:column style="width:20px;text-align:center;">
+                              <f:facet name="header">
+                                 <h:outputText value="No." />
+                              </f:facet>
+                              <h:outputText value="#{row +1}" />
+                           </p:column>
+                           <p:column style="width:200px;text-align:center;">
+                              <f:facet name="header">
+                                 <h:outputText value="Interface Name" />
+                              </f:facet>
+                              <h:outputText value="#{interfaceService.name}" />
+                           </p:column>
+
+                        </p:dataTable>
+                     </p:panel>
+                  </p:tab>
+          
+
+               <p:tab title="Services">
+                  <p:panel id="servicesDocumentTablePanel">
+                     <p:dataTable var="serviceDocument" rowIndexVar="row" resizableColumns="true" value="#{wsdlDucument.services}">
+                        <p:column style="width:20px;text-align:center;">
+                           <f:facet name="header">
+                              <h:outputText value="No." />
+                           </f:facet>
+                           <h:outputText value="#{row +1}" />
+                        </p:column>
+                        <p:column style="width:200px;text-align:center;">
+                           <f:facet name="header">
+                              <h:outputText value="Service Name" />
+                           </f:facet>
+                           <h:outputText value="#{serviceDocument.name}" />
+                        </p:column>
+
+                     </p:dataTable>
+                  </p:panel>
+               </p:tab>
+
+            </p:accordionPanel>
+         </p:outputPanel>
+      </h:form>
+   </h:body>
+
+</html>

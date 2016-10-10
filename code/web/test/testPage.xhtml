@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+   <h:head>
+      <title>Test Tree Page by Peter</title>
+      <style type="text/css">
+         caption{
+            color: #FFFFFF;
+            background:#4682B4;
+            font-size:140%;
+            border:1px solid #000;
+            border-bottom:none;
+            padding:5px;
+            text-align:left;
+         }
+         table {
+            border:1px solid #000;
+            border-collapse:collapse;
+            font-family:arial,sans-serif;
+            font-size:80%;
+         }
+         td,th{
+            border:1px solid #000;
+            border-collapse:collapse;
+            padding:5px;
+         }
+         thead th{
+            color: #FFFFFF;
+            background:#3A5FCD;
+            text-align:center;
+
+         }
+         tbody th{
+            text-align:center;
+            background:#69c;
+         }
+         tfoot td{
+            text-align:right;
+            font-weight:bold;
+            background:#7AC5CD;
+         }
+         tbody td{
+            background:#D6D6D6;
+            text-align:center;
+         }
+         tbody tr.odd td{
+            background:#F2F2F2;
+         }
+
+      </style>
+   </h:head>
+
+   <h:body>
+
+      <table>
+         <caption>Payment Transaction</caption>
+         <thead>
+            <tr>
+               <th width="30">No.</th>
+               <th width="100">Payment ID</th>
+               <th width="100">Payment Date</th>
+               <th width="120">Credit No</th>
+               <th width="180">Name on Card</th>
+               <th width="120">Amount (THB)</th>
+               <th width="75">Exp. Date</th>
+               <th width="50">CVV</th>
+                <th width="100">Statue</th>
+            </tr>
+         </thead>
+         <tfoot>
+            <tr>
+               <td colspan="9">Total: 3 Baht</td>
+            </tr>
+         </tfoot>
+         <tbody>
+            <tr>
+               <td>1</td>
+               <td>11111111111111</td>
+               <td>12/12/2009</td>
+               <td>ABCDEFG11111</td>
+               <td>Pongsak Gran</td>
+               <td>2345</td>
+               <td>12/12</td>
+               <td>123</td>
+               <td>Completed</td>
+            </tr>
+            <tr class="odd">
+               <td>2</td>
+               <td>11111111111111</td>
+               <td>12/12/2009</td>
+               <td>ABCDEFG11111</td>
+               <td>Pongsak GRASe</td>
+               <td>2345</td>
+               <td>12/12</td>
+               <td>123</td>
+                <td>Completed</td>
+            </tr>
+            <tr>
+               <td>3</td>
+               <td>11111111111111</td>
+               <td>12/12/2009</td>
+               <td>ABCDEFG11111</td>
+               <td>Pongsak GRASe</td>
+               <td>2345</td>
+               <td>12/12</td>
+               <td>123</td>
+                <td>Completed</td>
+            </tr>
+         </tbody>
+      </table>
+   </h:body>
+
+</html>

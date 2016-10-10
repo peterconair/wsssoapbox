@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:p="http://primefaces.org/ui">
+
+   <p:dialog  widgetVar="encryptPartsVar" header="Add Encrypt Parts" 
+              modal="ture" appendToBody="true"
+              resizable="false">
+      <p:panel style="width: 300px; height: 160px" styleClass="panel-backgound" >
+         <p:fieldset legend="Element Selection" >
+            <h:panelGrid columns="2">
+               <h:outputLabel value="Tag Name  "/>
+               <p:selectOneMenu  value="#{encryptionForm.tagName}">
+                  <f:selectItems value="#{encryptionForm.tagNames}" />
+               </p:selectOneMenu>
+               <h:outputLabel value="Encrypt  "/>
+               <p:selectOneMenu value="#{encryptionForm.encryptionPart}">
+                  <f:selectItems value="#{encryptionForm.encryptionParts}"/>
+               </p:selectOneMenu>
+            </h:panelGrid>
+         </p:fieldset>
+         <br/>
+         <div style="text-align:  right">
+            <h:panelGroup >
+               <p:commandButton value="Add" action="#{encryptionForm.addEncryptParts}"
+                                oncomplete="encryptPartsVar.hide();" update="soapPartsTable"/>
+               <p:commandButton value="Cancel" type="button" onclick="encryptPartsVar.hide();" />  
+            </h:panelGroup>
+         </div>
+      </p:panel>
+   </p:dialog>
+
+   <p:panel id="encPanel" styleClass="panel-backgound">
+      <p:fieldset legend="Encryption " >  
+         <p:fieldset legend="Key Selection ">
+            <h:panelGrid columns="2" >
+               <h:outputLabel value="Key Store " />         
+               <p:selectOneMenu value="#{encryptionForm.keyStoreName}">  
+                  <f:selectItem itemValue="" itemLabel="Select Key Store"/>
+                  <f:selectItems value="#{encryptionForm.keyStores}" /> 
+                  <p:ajax   update="alaisNameSelect" process="@this"
+                          listener="#{encryptionForm.handleKeyStoreChange}"  />  
+               </p:selectOneMenu>
+               <h:outputLabel value="Alias Name  " />
+               <p:selectOneMenu id="alaisNameSelect" value="#{encryptionForm.aliasName}" >  
+                  <f:selectItem itemValue="" itemLabel="Select Alias Name"/>
+                  <f:selectItems value="#{encryptionForm.aliasNames}" />   
+               </p:selectOneMenu>  
+               <h:outputLabel value="Password  " />
+               <p:inputText value="#{encryptionForm.password}" required="ture" requiredMessage="Password cannot be null."/>
+            </h:panelGrid>
+         </p:fieldset>
+
+         <p:fieldset legend="Encryption Criteria ">
+            <h:panelGrid columns="2">
+               <h:outputLabel value="Key Indefifier Type  " />
+               <p:selectOneMenu value="#{encryptionForm.encBean.keyIdType}">  
+                  <f:selectItems value="#{encryptionForm.keyIdTypes}" /> 
+               </p:selectOneMenu>
+               <h:outputLabel value="Symmetric Encoding Algorithm  " />
+               <p:selectOneMenu value="#{encryptionForm.encBean.symmetricEncAlg}">  
+                  <f:selectItems value="#{encryptionForm.symmetricEncAlgs}" /> 
+               </p:selectOneMenu>
+
+               <h:outputLabel value="Key Encryption Algorithm  " />
+               <p:selectOneMenu value="#{encryptionForm.encBean.keyEncryptionAlg}">  
+                  <f:selectItems value="#{encryptionForm.keyEncryptionAlgs}" /> 
+               </p:selectOneMenu>
+
+               <h:outputLabel value="Encryption Canonicalization  " />
+               <p:selectOneMenu value="#{encryptionForm.encBean.encCononicalization}">  
+                  <f:selectItems value="#{encryptionForm.encCononicalizations}" /> 
+               </p:selectOneMenu>
+
+
+               <h:outputLabel value="Soap Message  "  rendered="false"/>
+               <p:inputTextarea   id="encOut"  value="#{encryptionForm.encBean.strSecMessage}"
+                                  cols="100" rows="15" rendered="false"/>
+            </h:panelGrid>
+         </p:fieldset>
+      </p:fieldset>
+      <br/>
+      <p:fieldset id="soapParts" legend="Encrypt parts" toggleable="true" collapsed="true" >
+         <p:outputPanel id="soapPartsPanel">
+            <p:dataTable id="soapPartsTable" rowIndexVar="row" value="#{encryptionForm.soapPartBeans}" var="soapPart"
+                         emptyMessage="Not found parts.">
+               <f:facet name="header" >
+                  <div style="text-align: left">
+                     <p:commandLink onclick="encryptPartsVar.show();" title="Add Encrypt Parts" >
+                        <p:graphicImage value="/resources/images/table/table_row_insert.png" />
+                     </p:commandLink>
+                  </div>
+               </f:facet>
+               <p:column style="width: 50px; text-align: center">
+                  <f:facet name="header">
+                     <h:outputText value="No." />
+                  </f:facet>
+                  <h:outputText value="#{row+1}" />
+               </p:column>
+               <p:column style="width: 100px; text-align: center">
+                  <f:facet name="header">
+                     <h:outputText value="Id" />
+                  </f:facet>
+                  <h:outputText value="#{soapPart.contentId}" />
+               </p:column>
+               <p:column style="width: 100px; text-align: center">
+                  <f:facet name="header">
+                     <h:outputText value="Tag Name" />
+                  </f:facet>
+                  <h:outputText value="#{soapPart.tagName}" />
+               </p:column>
+
+               <p:column headerText="Content" style="width: 100px; text-align: center">
+                  <p:cellEditor>
+                     <f:facet name="output">
+                        <h:outputText value="#{soapPart.content}"  />
+                     </f:facet>                   
+                     <f:facet name="input">  
+                        <h:selectOneMenu value="#{encryptionForm.encryptionPart}" >  
+                           <f:selectItems value="#{encryptionForm.encryptionParts}"  
+                                          var="part"   
+                                          itemLabel="#{part}"  
+                                          itemValue="#{part}" />  
+                        </h:selectOneMenu>  
+                     </f:facet>  
+                  </p:cellEditor>
+               </p:column>
+
+               <p:column headerText="Options" style="width:50px">  
+                  <p:rowEditor /> 
+                  <p:commandLink id="delSoapPartsLink" action="#{encryptionForm.deleteEncryptParts(soapPart)}"
+                                 update=":messageForm:soapPartsPanel"  process="@this"  
+                                 title="Delete"> 
+                     <p:graphicImage value="/resources/images/table/table_row_delete.png" />
+                  </p:commandLink>
+               </p:column>  
+
+            </p:dataTable>
+         </p:outputPanel>
+      </p:fieldset>
+
+      <br/>
+
+      <div style="text-align:  right">
+         <h:panelGroup >
+            <p:commandButton value="Save"  actionListener="#{encryptionForm.encryptMessage}" 
+                             update="@form"  process="@form"     
+                             oncomplete="encryptionDlg.hide()">
+            </p:commandButton>
+            <p:commandButton value="Cancel" type="button" onclick="encryptionDlg.hide()"/>
+         </h:panelGroup>
+      </div>
+   </p:panel> 
+</f:view>

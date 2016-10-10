@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+   <h:head >
+
+      <title>Hashing Tool</title>
+      <meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+      <link type="text/css" rel="stylesheet" href="#{request.contextPath}/resources/css/default.css" />
+   </h:head>
+   <h:body>
+
+      <div>
+         <h:form >
+            <p:growl id="hashGrowl" showDetail="true" sticky="true" />  
+            <p:outputPanel>
+               <h:panelGrid columns="5" > 
+                  <h:outputText value="Options :" />
+                  <p:selectOneMenu value="#{hashingForm.option}">
+                     <f:selectItem  itemValue="1" itemLabel="Simple Hashing" />
+                     <f:selectItem  itemValue="2" itemLabel="Hashing with Salt" />
+                     <f:selectItem  itemValue="3" itemLabel="Hashing with Salt n time" />
+                     <f:selectItem  itemValue="4" itemLabel="Hashing  URL" />
+                     <f:selectItem  itemValue="5" itemLabel="Hashing  File" />  
+                     <ui:remove>
+
+                     </ui:remove>  
+                     <p:ajax listener="#{hashingForm.optionsChangeListener}" update="resultPanel"/>
+                  </p:selectOneMenu>
+
+                  <h:outputText value="algorithm :" />
+
+
+                  <p:selectOneMenu id="algorithm" value="#{hashingForm.algorithm}"  >
+                     <ui:remove >
+                        <f:selectItems value="#{hashingForm.algorithms}" />
+                     </ui:remove>
+                      <f:selectItem  itemValue="SHA-1" itemLabel="SHA-1" />
+                     <p:ajax event="change" listener="#{hashingForm.hash}" 
+                             update="resultPanel"  />
+                  </p:selectOneMenu>                     
+                  <p:commandButton value="Calculate" action="#{hashingForm.hash}" process="@form"  update="urlLenthTxt out outLength"
+                                   />
+               </h:panelGrid>
+               <p:separator/>
+               <p:panel id="resultPanel">
+
+                  <p:outputPanel id="panel"  >
+                     <h:panelGrid columns="2" >
+                        <h:panelGrid columns="1" >
+                           <h:panelGroup id="in">
+                              <h:panelGroup >
+                                 <h:panelGroup id="inputGroup" rendered="#{hashingForm.option ne '4' and hashingForm.option ne '5'}" >
+                                    <h:panelGrid columns="4" >
+                                       <h:outputText value="input :" />
+                                       <p:inputTextarea value="#{hashingForm.input}" rows="3" cols="40"  >
+                                          <p:ajax event="keyup" listener="#{hashingForm.hash}" process="@form"
+                                                  update="inputLength inputBase64 inputLengthBase64 out outLength"  />
+                                       </p:inputTextarea>
+                                       <h:outputText value="Base64 :" />
+                                       <p:inputTextarea id ="inputBase64" value="#{hashingForm.inputBase64}" rows="3" cols="40" />
+
+                                       <h:outputText  value="length: " />
+                                       <p:inputText id="inputLength"  label="byte" value="#{hashingForm.inputLength}" readonly="true" />
+
+                                       <h:outputText value="length: " />
+                                       <p:inputText id="inputLengthBase64" value="#{hashingForm.inputBase64Length}" readonly="true" />
+                                    </h:panelGrid>
+                                 </h:panelGroup>
+
+                                 <h:panelGroup id="saltGroup" rendered="#{hashingForm.option eq '2' or hashingForm.option eq '3' }">
+                                    <h:panelGrid columns="2">
+                                       <h:outputText value="salt : " />
+                                       <p:inputText id="saltValueTxt" value="#{hashingForm.saltValue}" size="20" >
+                                          <p:ajax event="keyup" listener="#{hashingForm.hash}" process="@form"
+                                                  update="timeTxt inputLength out outLength"  />
+                                       </p:inputText>
+                                    </h:panelGrid>
+                                 </h:panelGroup>
+                                 <h:panelGroup id="timeGroup" rendered="#{hashingForm.option eq '3'}" >
+                                    <h:panelGrid columns="2">
+                                       <h:outputText value="Time : " />
+                                       <p:inputText  id="timeTxt" value="#{hashingForm.time}" maxlength="2" size="5"  >
+                                          <p:ajax event="keyup" listener="#{hashingForm.hash}" process="@form"
+                                                  update="saltValueTxt inputLength out outLength"  />
+                                       </p:inputText>
+                                    </h:panelGrid>
+                                 </h:panelGroup>
+                                 <h:panelGroup id="urlGroup" rendered="#{hashingForm.option eq '4'}">
+                                    <h:panelGrid columns="2">
+                                       <h:outputText value="URL :" />
+                                       <p:inputText  id="urlTxt" value="#{hashingForm.inputURL}" size="70">
+                                          <p:ajax event="change" listener="#{hashingForm.hash}" update ="urlLenthTxt hashGrowl out"/>
+                                       </p:inputText>
+                                       <h:outputText value="Content Length :" />
+                                       <p:inputText id="urlLenthTxt" value="#{hashingForm.inputLength}" size="10" />
+                                    </h:panelGrid>
+                                 </h:panelGroup>
+
+                                 <h:panelGroup id="fileGroup" rendered="#{hashingForm.option eq '5'}">
+                                    <h:panelGrid columns="2">
+                                       <h:outputText value="File :" />
+                                       <p:inputText id="urlFile" value="#{hashingForm.inputFile}" size="70" >
+                                          <p:ajax event="change" listener="#{hashingForm.hash}" update ="fileLenthTxt hashGrowl out"/>
+                                       </p:inputText>
+                                       <h:outputText value="Content Length :" />
+                                       <p:inputText id="fileLenthTxt" value="#{hashingForm.inputLength}" size="10" />
+                                    </h:panelGrid>
+                                 </h:panelGroup>
+                              </h:panelGroup>
+                           </h:panelGroup>
+
+                           <h:panelGroup id="out" >
+                              <h:panelGrid columns="4" >
+
+                                 <h:outputText value="Digest: " />
+                                 <p:inputTextarea value="#{hashingForm.output}" rows="5" cols="40" readonly="true" autoResize="true"/>
+
+                                 <h:outputText value="Base64: " />
+                                 <p:inputTextarea value="#{hashingForm.outputBase64}" rows="5" cols="40" readonly="true" autoResize="true"/>
+
+                                 <h:outputText value="length: " />
+                                 <p:inputText id="outLength" value="#{hashingForm.outputLength}" readonly="true"/>
+
+                                 <h:outputText value="length: " />
+                                 <p:inputText id="outBase64Length" value="#{hashingForm.outputBase64Length}" readonly="true"/>
+                              </h:panelGrid>
+                           </h:panelGroup>
+                        </h:panelGrid>
+                     </h:panelGrid>
+                  </p:outputPanel>
+               </p:panel>
+            </p:outputPanel>
+         </h:form>
+      </div>
+
+   </h:body>
+</html>

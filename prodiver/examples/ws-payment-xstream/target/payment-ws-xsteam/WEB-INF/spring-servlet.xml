@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns='http://www.springframework.org/schema/beans'
+   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+   xmlns:p='http://www.springframework.org/schema/p'
+   xmlns:context="http://www.springframework.org/schema/context"
+   xmlns:lang='http://www.springframework.org/schema/lang'
+   xmlns:util="http://www.springframework.org/schema/util"
+   xsi:schemaLocation='http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+      http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-2.5.xsd
+      http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd'>
+
+    <context:component-scan base-package="com.javatech.payment" />
+	
+	<!-- Configures the annotation-driven Spring MVC Controller programming model.
+	Note that, with Spring 3.0, this tag works in Servlet MVC only!  -->
+    <context:annotation-config />
+    
+    
+    <bean id="paymentService" class="com.javatech.payment.service.PaymentService"/>
+    
+    <bean id="paymentEndpoint" class="com.javatech.payment.endpoint.PaymentEndpoint">
+        <property name="paymentService" ref="paymentService">
+        </bean>
+      
+        <bean id="xStreamMarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller" >
+            <property name="aliases">
+                <map>
+                    <entry key="payment" value="com.javatech.payment.mapping.PaymentRequest" />
+                    <entry key="payments" value="com.javatech.payment.persistent.Payments" />               
+                </map>           
+            </property>
+            <property name="implicitCollections">
+                <map>
+                    <entry key="com.javatech.payment.persistent.Payments" value="payments" />    
+                </map>        
+            </property>     
+        </bean>
+    
+        <bean id="xStreamUnMarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller" >
+            <property name="aliases">
+                <map>
+                    <entry key="payment" value="com.javatech.payment.mapping.PaymentResponse" />
+                    <entry key="payments" value="com.javatech.payment.persistent.Payments" />               
+                </map>           
+            </property>
+            <property name="implicitCollections">
+                <map>
+                    <entry key="com.javatech.payment.persistent.Payments" value="payments" />    
+                </map>       
+            </property>   
+        </bean>
+    
+        <bean id="marshallingPayloadMethodProcessor" class="org.springframework.ws.server.endpoint.adapter.method.MarshallingPayloadMethodProcessor">
+            <constructor-arg ref="xStreamMarshaller"/>
+            <constructor-arg ref="xStreamUnMarshaller"/>
+        </bean>
+	
+        <bean id="defaultMethodEndpointAdapter" class="org.springframework.ws.server.endpoint.adapter.DefaultMethodEndpointAdapter">
+            <property name="methodArgumentResolvers">
+                <list>
+                    <ref bean="marshallingPayloadMethodProcessor"/>
+                </list>	
+            </property>
+            <property name="methodReturnValueHandlers">
+                <list>
+                    <ref bean="marshallingPayloadMethodProcessor"/>
+                </list>
+            </property>
+        </bean>
+       
+       <!--
+    <bean class="org.springframework.ws.server.endpoint.mapping.UriEndpointMapping" >
+        <property name="defaultEndpoint" ref="paymentEndpoint"/>
+    </bean>
+    -->       
+    
+         <!-- WSDL definition -->
+        <bean id="payment" class="org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition">
+            <property name="schema" ref="schema"/>
+            <property name="portTypeName" value="Payment"/>
+            <property name="locationUri" value="/payment"/>
+            <property name="targetNamespace" value="http://payment.javatech.com/ws/schema/oss" />
+        </bean>
+     
+
+    <!-- WSDL schema -->
+        <bean id="schema" class="org.springframework.xml.xsd.SimpleXsdSchema"
+          p:xsd="/WEB-INF/payment.xsd"/>
+
+    </beans>

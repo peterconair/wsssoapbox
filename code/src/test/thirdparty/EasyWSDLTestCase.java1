@@ -1,0 +1,55 @@
+package thirdparty;
+
+import java.util.List;
+
+import javax.wsdl.Message;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.ow2.easywsdl.wsdl.api.Description;
+import org.ow2.easywsdl.wsdl.impl.wsdl11.DescriptionImpl;
+import org.ow2.easywsdl.wsdl.impl.wsdl11.MessageImpl;
+import org.wsssoapbox.datasource.wsdl.WSDLDocumentDataSource;
+
+import wsdl.InputDAOTestCase;
+import wsdl.WSDLList;
+
+public class EasyWSDLTestCase {
+
+   private static Description desc;
+   /**
+    * @uml.property name="wsdlDocumentDataSource"
+    * @uml.associationEnd
+    */
+   private static WSDLDocumentDataSource wsdlDocumentDataSource;
+
+   @Before
+   public void setUp() throws Exception {
+      wsdlDocumentDataSource = new WSDLDocumentDataSource(WSDLList.url);
+      EasyWSDLTestCase.desc = wsdlDocumentDataSource.getDesc();
+   }
+
+   @Test
+   public void testCastingToWSDL1() {
+      //	List<Message> messages ; 
+      //	((org.ow2.easywsdl.impl.wsdl11.DescriptionImpl) desc).getMessages();
+   }
+
+   @Test
+   public void getMessageWSDL1_1() {
+      List<MessageImpl> messages = ((DescriptionImpl) desc).getMessages();
+      for (MessageImpl m : messages) {
+         System.out.println(m.getQName());
+      }
+   }
+
+   /*
+   public void getMessageWSDL2_0() {
+   //   List<MessageImpl> messages = ((DescriptionImpl) 
+   for (MessageImpl m : messages) {
+   System.out.println(m.getQName());
+   }
+   }
+    * 
+    */
+}

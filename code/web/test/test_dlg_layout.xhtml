@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+   <ui:composition template="/main/home.xhtml">
+      <ui:define name="content">
+         <h:form>
+            <p:commandButton value="Open Dialog" oncomplete="testLayoutDlg.show();"/>    
+
+
+            <p:dialog  widgetVar="testLayoutDlg" 
+                       header="Preferences" modal="false" 
+                       height="500" 
+                       width="700" 
+                       resizable="false"
+                       closable="true"
+                       draggable="true"
+                       showEffect="clip" 
+                       hideEffect="clip" >
+                   <div style="width: 680px; height: 510px; 
+           overflow: visible; position: relative;" 
+           class="ui-layout-container">
+                      
+                   </div>
+            </p:dialog>
+
+            <ui:remove>  
+               <p:dialog  widgetVar="testLayoutDlg" 
+                          header="Preferences" modal="false" 
+                          height="500" 
+                          width="700" 
+                          resizable="false"
+                          closable="true"
+                          draggable="true"
+                          showEffect="clip" 
+                          hideEffect="clip" >
+                  <p:layout fullPage="true" style="z-index: 1200;">
+                     <p:layoutUnit   position="north" size="50" >
+                     </p:layoutUnit>
+                     <p:layoutUnit  position="west" size="300" header="Navigator" 
+                                    style="padding:0;" resizable="true"
+                                    closable="true" collapsible="true"  minSize="200">
+                     </p:layoutUnit>
+                     <p:layoutUnit  position="center"  style="padding:0;" >
+                     </p:layoutUnit>
+                     <p:layoutUnit  position="south" size="80" resizable="true" closable="true" collapsible="true"
+                                    header="Logging" >
+                     </p:layoutUnit>
+                  </p:layout>
+               </p:dialog>
+            </ui:remove>   
+         </h:form>
+
+      </ui:define>
+   </ui:composition>
+</html>

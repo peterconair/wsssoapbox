@@ -1,0 +1,271 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package thirdparty;
+
+import java.util.List;
+import javax.wsdl.extensions.soap.SOAPOperation;
+import javax.wsdl.BindingOutput;
+import javax.wsdl.BindingInput;
+import javax.wsdl.BindingOperation;
+import javax.wsdl.Binding;
+import java.util.Map;
+import java.util.Iterator;
+import javax.wsdl.Definition;
+import javax.wsdl.WSDLException;
+import javax.wsdl.xml.WSDLReader;
+import javax.wsdl.factory.WSDLFactory;
+import javax.xml.namespace.QName;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+/**
+ *
+ * @author Peter
+ */
+public class WSDL4JTestCase {
+
+   static String WSDLURL;
+   static WSDLReader wsdlReader;
+   static Definition desc;
+
+   public WSDL4JTestCase() {
+   }
+
+   @BeforeClass
+   public static void setUpClass() throws Exception {
+      //WSDLURL = "http://localhost:8080/jaxws-un_symmetric/simple?wsdl";
+      WSDLURL = "http://www.pttplc.com/pttinfo.asmx?WSDL";
+      wsdlReader = WSDLFactory.newInstance().newWSDLReader();
+      desc = (Definition) wsdlReader.readWSDL(WSDLURL);
+   }
+
+   //@Test
+   public void getDescTest() throws WSDLException {
+      System.out.println("************ desc.getAllBindings() : **************");
+      System.out.println(desc.getAllBindings());
+      System.out.println("getAllPortTypes **************");
+      System.out.println(desc.getAllPortTypes());
+      System.out.println("***************  getAllServices **************");
+      System.out.println(desc.getAllServices());
+      System.out.println("***************  getBindings **************");
+      System.out.println(desc.getBindings());
+      System.out.println("***************  getDocumentBaseURI **************");
+      System.out.println(desc.getDocumentBaseURI());
+      System.out.println("***************  getDocumentationElement **************");
+      System.out.println(desc.getDocumentationElement());
+      System.out.println("***************  getExtensibilityElements **************");
+      System.out.println(desc.getExtensibilityElements());
+      System.out.println("***************  getExtensionAttributes **************");
+      System.out.println(desc.getExtensionAttributes());
+      System.out.println("***************  getExtensionRegistry **************");
+      System.out.println(desc.getExtensionRegistry());
+      System.out.println("***************  getImports **************");
+      System.out.println(desc.getImports());
+      System.out.println("***************  getMessages **************");
+      System.out.println(desc.getMessages());
+      System.out.println("***************  getNamespaces **************");
+      System.out.println(desc.getNamespaces());
+      System.out.println("***************  getNativeAttributeNames **************");
+      System.out.println(desc.getNativeAttributeNames());
+      System.out.println("***************  getPortTypes **************");
+      System.out.println(desc.getPortTypes());
+      System.out.println("***************  getQName **************");;
+      System.out.println(desc.getQName());
+      System.out.println("***************  getServices **************");
+      System.out.println(desc.getServices());
+      System.out.println("***************  getTargetNamespace **************");
+      System.out.println(desc.getTargetNamespace());
+      System.out.println("***************  getTypes **************");
+      System.out.println(desc.getTypes());
+   }
+   // @Test
+
+   public void getNamespacesTest() throws WSDLException {
+      System.out.println("************* getNamespaces *************");
+      Iterator it = desc.getNamespaces().entrySet().iterator();
+      while (it.hasNext()) {
+         Map.Entry pairs = (Map.Entry) it.next();
+         Object name = pairs.getKey();
+         Object value = pairs.getValue();
+         System.out.println(name + " : " + value);
+      }
+   }
+
+   //   @Test
+   public void getAllPortTypesTest() throws WSDLException {
+
+      System.out.println("*************** getAllPortTypes *************");
+      Iterator it0 = desc.getAllPortTypes().entrySet().iterator();
+      while (it0.hasNext()) {
+         Map.Entry pairs = (Map.Entry) it0.next();
+         Object name = pairs.getKey();
+         Object value = pairs.getValue();
+         System.out.println(name + " : " + value);
+      }
+   }
+
+   //  @Test
+   public void getImportsTest() throws WSDLException {
+      System.out.println("************* getImports *************");
+      Iterator it = desc.getImports().entrySet().iterator();
+      while (it.hasNext()) {
+         Map.Entry pairs = (Map.Entry) it.next();
+         Object name = pairs.getKey();
+         Object value = pairs.getValue();
+         System.out.println(name + " : " + value);
+      }
+   }
+
+   //  @Test
+   public void ServcieTest() throws WSDLException {
+      System.out.println("************* Service *************");
+      //    System.out.println("Servcie : " + desc.getServices());
+
+      Iterator it = desc.getServices().entrySet().iterator();
+      while (it.hasNext()) {
+         Map.Entry pairs = (Map.Entry) it.next();
+         Object name = pairs.getKey();
+         Object value = pairs.getValue();
+         System.out.println(name + " : " + value);
+      }
+//      Service service = desc.getService("ss");
+      System.out.println("**********************************");
+   }
+
+   //  @Test
+   public void getAllBindingsTest() throws WSDLException {
+      System.out.println("************* getAllBindings ************");
+      // System.out.println("Bidning : " + desc.getAllBindings());
+      Iterator it = desc.getAllBindings().entrySet().iterator();
+      while (it.hasNext()) {
+         Map.Entry pairs = (Map.Entry) it.next();
+         Object name = pairs.getKey();
+         Object value = pairs.getValue();
+         System.out.println(name + " : " + value);
+      }
+      System.out.println("******************************");
+   }
+
+   //  @Test
+   public void getBindingsTest() throws WSDLException {
+      System.out.println("************* getBindings ************");
+      // System.out.println("Bidning : " + desc.getAllBindings());
+      Iterator it = desc.getBindings().entrySet().iterator();
+      while (it.hasNext()) {
+         Map.Entry pairs = (Map.Entry) it.next();
+         Object name = pairs.getKey();
+         Object value = pairs.getValue();
+         System.out.println(name + " : " + value);
+      }
+      System.out.println("******************************");
+   }
+
+ //  @Test
+   public void getBindingOperationTest() throws WSDLException {
+      // QName bindingQName = new QName("http://tempuri.org/", "IFinancialService_Binding");
+      QName bindingQName = new QName("http://www.pttplc.com/ptt_webservice/", "PTTInfoSoap");
+      String name = "CurrentOilPrice";
+      String input = null;
+      String output = null;
+      Binding binding = desc.getBinding(bindingQName);
+      BindingOperation bindignOperation = binding.getBindingOperation(name, input, output);
+      System.out.println(bindignOperation);
+  //    System.out.println(binding);
+
+   }
+
+   
+
+   //  @Test
+   public void getBindingTest() throws WSDLException {
+      System.out.println("************* getBinding ************");
+      // System.out.println("Bidning : " + desc.getAllBindings());
+      // QName bindingQName = new QName("http://tempuri.org/", "IFinancialService_Binding");
+
+      QName bindingQName = new QName("http://www.pttplc.com/ptt_webservice/", "PTTInfoSoap");
+
+      Binding binding = desc.getBinding(bindingQName);
+      String version = "";
+      String soapAction = "";
+
+
+      System.out.println("***************** Binding ****************");
+      System.out.println(binding);
+
+      System.out.println("");
+      System.out.println("");
+
+      //  System.out.println(binding);
+      if (!binding.getBindingOperations().isEmpty()) {
+         Iterator it = binding.getBindingOperations().iterator();
+         while (it.hasNext()) {
+
+            BindingOperation bop = (BindingOperation) it.next();
+            System.out.println("*** Operaiton Name : " + bop.getName());
+
+            System.out.println("**** NativeAttributeName : " + bop.getNativeAttributeNames());
+
+            //  System.out.println("**** getExtensibilityElements : " + bop.getExtensibilityElements());
+
+            if (!bop.getExtensibilityElements().isEmpty()) {
+               Iterator itExtend = bop.getExtensibilityElements().iterator();
+
+               while (itExtend.hasNext()) {
+                  Object ob = itExtend.next();
+                  System.out.println(ob.getClass());
+                  if (ob instanceof SOAPOperation) {
+                     SOAPOperation soapOperation = (SOAPOperation) ob;
+                     System.out.println("SOAP Action : " + soapOperation.getSoapActionURI());
+                     System.out.println("Require : " + soapOperation.getRequired());
+                     System.out.println("SOAP Style : " + soapOperation.getStyle());
+                  } else {
+                     System.out.println(ob);
+                  }
+               }
+
+            }
+
+            System.out.println("**** getExtensionAttributes(): " + bop.getExtensionAttributes());
+            System.out.println("***** DocumentationElement : " + bop.getDocumentationElement());
+            BindingInput bdi = bop.getBindingInput();
+            BindingOutput bdo = bop.getBindingOutput();
+            System.out.println("*** Binding Input Name : " + bdi);
+            System.out.println("*** Binding Output Name : " + bdo);
+            if (!bop.getBindingFaults().isEmpty()) {
+               Map.Entry pairs = (Map.Entry) bop.getBindingFaults().entrySet();
+               Object name = pairs.getKey();
+               Object value = pairs.getValue();
+               System.out.println(name + " : " + value);
+            }
+            System.out.println("");
+            System.out.println("");
+            System.out.println("********** Bidning Operation ***************");
+            System.out.println(bop);
+            System.out.println("");
+            System.out.println("");
+            System.out.println("Operation : ");
+            System.out.println(bop.getOperation());
+            System.out.println("Parameter Ordering : " + bop.getOperation().getParameterOrdering());
+            System.out.println("Operation Style : " + bop.getOperation().getStyle());
+
+         }
+      }
+
+      System.out.println("******************************");
+   }
+
+ //  @Test
+   public void MessageTest() throws WSDLException {
+      System.out.println("******************************");
+      //  System.out.println("Message : " + desc.getMessages());
+      Iterator it1 = desc.getMessages().entrySet().iterator();
+      while (it1.hasNext()) {
+         Map.Entry pairs = (Map.Entry) it1.next();
+         Object name = pairs.getKey();
+         Object value = pairs.getValue();
+         System.out.println(name + " : " + value);
+      }
+   }
+}

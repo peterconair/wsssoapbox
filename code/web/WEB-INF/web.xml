@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+   
+   <display-name>wsssoapbox</display-name>
+   <servlet>
+      <servlet-name>Faces Servlet</servlet-name>
+      <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+      <load-on-startup>1</load-on-startup>
+   </servlet>
+   <servlet-mapping>
+      <servlet-name>Faces Servlet</servlet-name>
+      <url-pattern>*.xhtml</url-pattern>
+   </servlet-mapping>
+  
+  
+   <context-param>
+      <param-name>javax.faces.PROJECT_STAGE</param-name>
+      <param-value>Production</param-value>
+   </context-param>
+    <!--   
+   <context-param>
+      <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+      <param-value>server</param-value>
+   </context-param>
+  -->
+   <session-config>
+      <session-timeout>20</session-timeout>
+   </session-config>
+   <welcome-file-list>
+      <welcome-file>index.jsp</welcome-file>
+   </welcome-file-list>
+   
+    <!-- for start derby database not yet implement now 
+    <listener>
+        <description>inintial derby database </description>
+        <listener-class>org.wsssoapbox.webapp.listener.ServerLifecycleListener</listener-class>
+    </listener>
+    -->
+    <!-- mornitor Session attribute-->
+   <listener>
+      <description>mornitor Session attribute</description>
+      <listener-class>org.wsssoapbox.webapp.listener.AttributeListener</listener-class>
+   </listener>
+   <listener>
+      <description>ConfigureListener</description>
+      <listener-class>com.sun.faces.config.ConfigureListener</listener-class>
+   </listener>
+   <listener>
+      <description>HttpSessionListener</description>
+      <listener-class>org.wsssoapbox.webapp.listener.SessionCounterListener</listener-class>
+   </listener>
+   
+   
+      <!-- Character Encoding Filter-->
+   <filter>
+      <filter-name>Character Encoding Filter</filter-name>
+      <filter-class>org.wsssoapbox.webapp.filter.CharacterEncodingFilter</filter-class>
+   </filter>
+   <filter-mapping>
+      <filter-name>Character Encoding Filter</filter-name>
+      <servlet-name>Faces Servlet</servlet-name>
+   </filter-mapping>
+    <!--
+   <filter>
+      <filter-name>AuthenticaitonFilter</filter-name>
+      <filter-class>org.wsssoapbox.webapp.filter.AuthenticaitonFilter</filter-class>
+   </filter>
+   <filter-mapping>
+      <filter-name>AuthenticaitonFilter</filter-name>
+      <servlet-name>Faces Servlet</servlet-name>
+   </filter-mapping>
+  
+   
+   <filter>
+      <filter-name>DisableUrlSessionFilter</filter-name>
+      <filter-class>org.wsssoapbox.webapp.filter.DisableUrlSessionFilter</filter-class>
+   </filter>
+   <filter-mapping>
+      <filter-name>DisableUrlSessionFilter</filter-name>
+      <servlet-name>Faces Servlet</servlet-name>
+   </filter-mapping>
+    -->
+   <filter>
+      <filter-name>PrimeFaces FileUpload Filter</filter-name>
+      <filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
+   </filter>
+    <!--  -->
+   <filter-mapping>
+      <filter-name>PrimeFaces FileUpload Filter</filter-name>
+      <servlet-name>Faces Servlet</servlet-name>
+   </filter-mapping>
+   
+   <context-param>
+      <param-name>primefaces.THEME</param-name>
+      <param-value>#{guestPreferences.theme}</param-value>
+   </context-param>
+   
+   <context-param>
+      <param-name>javax.faces.CONFIG_FILES</param-name>
+      <param-value>/WEB-INF/navigation.xml,/WEB-INF/managedbeans.xml</param-value>
+   </context-param>
+   
+   
+   
+    <!-- for database connection -->
+   <resource-ref>
+      <description>WSSSoapBox DataSource</description>
+      <res-ref-name>jdbc/wsssoapboxDS</res-ref-name>
+      <res-type>javax.sql.DataSource</res-type>
+      <res-auth>Container</res-auth>
+      <res-sharing-scope>Shareable</res-sharing-scope>
+   </resource-ref>
+
+
+
+<!-- test for Authentication  
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Wildcard means whole app requires authentication</web-resource-name>
+         <url-pattern>/*</url-pattern>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+      </web-resource-collection>
+
+      <auth-constraint>
+         <role-name>admin</role-name>
+         <role-name>user</role-name>
+      </auth-constraint>
+
+      <user-data-constraint>
+         <transport-guarantee>NONE</transport-guarantee>
+      </user-data-constraint>
+   </security-constraint>
+
+   <security-role>
+      <role-name>admin</role-name>
+   </security-role>
+   <security-role>
+      <role-name>user</role-name>
+   </security-role>
+
+   <login-config>
+      <auth-method>FORM</auth-method>
+      <form-login-config>
+         <form-login-page>/main/login.xhtml</form-login-page>
+         <form-error-page>/main/login.xhtml</form-error-page>
+      </form-login-config>
+   </login-config>
+   <error-page>
+      <error-code>403</error-code>
+      <location>/main/login.xhtml</location>
+   </error-page>
+-->
+</web-app>

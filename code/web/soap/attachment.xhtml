@@ -1,0 +1,73 @@
+<f:view  xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+         xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+         xmlns:p="http://primefaces.org/ui">
+
+   <h:form id="attacheFileForm" prependId="false" enctype="multipart/form-data">
+      <p:outputPanel id="soapAttachmentPanel">
+
+         <p:dataTable id ="soapAttachmentDataTable" 
+                      value="#{soapRequestBean.soapAttachments}" 
+                      var="acttache" 
+                      rowIndexVar="row" >
+            <p:column style="width: 50px; text-align: center">
+               <f:facet name="header">
+                  <h:outputText value="No." />
+               </f:facet>
+               <h:outputText value="#{row+1}" />
+            </p:column>
+            <p:column style="text-align: center">
+               <f:facet name="header">
+                  <h:outputText value="Content ID" />
+               </f:facet>
+               <h:outputText value="#{acttache.contentID}" />
+            </p:column>
+            <p:column style="text-align: center">
+               <f:facet name="header">
+                  <h:outputText value="Nmae" />
+               </f:facet>
+               <h:outputText value="#{acttache.name}" />
+            </p:column>
+            <p:column style="text-align: center">
+               <f:facet name="header">
+                  <h:outputText value="Content-Type" />
+               </f:facet>
+               <h:outputText value="#{acttache.contentType}" />
+            </p:column>
+            <p:column style="text-align: center">
+               <f:facet name="header">
+                  <h:outputText value="Type" />
+               </f:facet>
+               <h:outputText value="#{acttache.type}" />
+            </p:column >
+            <p:column style="text-align: center">
+               <f:facet name="header">
+                  <h:outputText value="Size" />
+               </f:facet>
+               <h:outputText value="#{acttache.size}" />
+            </p:column >
+            <p:column id="deleteColumn" style="width: 60px; text-align: center">
+               <f:facet name="header">
+                  <h:outputText value="Operation" />
+               </f:facet>        
+               <p:commandLink id="deleteAttacheButton" 
+                              action="#{soapRequestAttachmentTab.deleteAttachFile(acttache)}" 
+                              update="@form :messageForm:messagesGrowl" 
+                              process ="@form"
+                              title="Delete"> 
+                  <p:collector id="attatcheCollector" value="#{acttache}" 
+                               removeFrom="#{soapRequestBean.soapAttachments}" /> 
+                  <p:graphicImage value="/resources/images/table/table_row_delete.png" />
+               </p:commandLink>
+            </p:column>
+         </p:dataTable>
+         <p:fileUpload id="attacheFileUpload" showButtons="false" label="Attache file"
+                       fileUploadListener="#{soapAttachmentController.handleFileUpload}"
+                       mode="advanced"
+                       update="soapAttachmentDataTable"
+                       auto="true"
+                       sizeLimit="100000" 
+                       allowTypes="/(\.|\/)(gif|jpe?g|png|txt)$/" />  
+      </p:outputPanel>
+   </h:form>
+
+</f:view >

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+		elementFormDefault="qualified" 
+		attributeFormDefault="qualified"
+        targetNamespace="http://payment.javatech.com/ws/schema/oss"
+        xmlns:tns="http://payment.javatech.com/ws/schema/oss">
+        
+    <element name="amount" tns:maxOccurs="1" tns:minOccurs="1">
+        <simpleType>
+            <restriction base="string">
+                <pattern value="([0-9])+"/>
+                <minLength value="1"/>
+                 <maxLength value="5"/>
+            </restriction>
+        </simpleType>
+    </element>
+    
+    <element name="cardNumber" tns:maxOccurs="1" tns:minOccurs="1">
+        <simpleType>
+            <restriction base="string">
+                <pattern value="([0-9])+"/>
+                <minLength value="13"/>
+                <maxLength value="13"/>
+            </restriction>
+        </simpleType>
+    </element>
+        
+    <element name="securityCode" tns:maxOccurs="1" tns:minOccurs="1">
+        <simpleType>
+            <restriction base="string">
+                <pattern value="([0-9])+"/>
+                <minLength value="3"/>
+                <maxLength value="3"/>
+            </restriction>
+        </simpleType>
+    </element>
+    
+    <element name="expirationDate" tns:maxOccurs="1" tns:minOccurs="1">
+        <simpleType>
+            <restriction base="string">
+                <pattern value="(0?[1-9]|1[012])/[0-9][0-9]"/>
+                <minLength value="5"/>
+                <maxLength value="5"/>
+            </restriction>
+        </simpleType>
+    </element>
+        
+    <element name="nameOnCard" tns:maxOccurs="1" tns:minOccurs="1">
+        <simpleType>
+            <restriction base="string">
+                <pattern value="([A-Z]|[a-z]|\s|\.)+"/>
+                <minLength value="3"/>
+                <maxLength value="50"/>
+            </restriction>
+        </simpleType>
+    </element>
+      
+    <element name="code" tns:maxOccurs="1" tns:minOccurs="1">
+        <simpleType>
+            <restriction base="string">
+                <enumeration value="COMPLEATED"/>
+                <enumeration value="REJECTED"/>
+            </restriction>
+        </simpleType>
+    </element>
+    
+    <element name="description" tns:maxOccurs="1" tns:minOccurs="1">
+        <simpleType >
+            <restriction base="string">
+            </restriction>
+        </simpleType>
+    </element>
+        <element name="referenceCode" tns:maxOccurs="1" tns:minOccurs="1">
+        <simpleType >
+            <restriction base="string">
+            </restriction>
+        </simpleType>
+    </element>
+    
+    <element name="paymentRequest" tns:maxOccurs="1" tns:minOccurs="1">
+        <complexType >
+            <sequence>
+                <element ref="tns:amount" />
+                <element ref="tns:cardNumber" />
+                <element ref="tns:expirationDate" />
+                <element ref="tns:securityCode" />
+                <element ref="tns:nameOnCard" />
+            </sequence>
+        </complexType>
+    </element>
+    
+    <element name="paymentResponse" tns:maxOccurs="1" tns:minOccurs="1">
+        <complexType>
+            <sequence>
+                <element ref="tns:code" />
+                <element ref="tns:description" />
+                <element ref="tns:referenceCode" />
+            </sequence>
+        </complexType>
+    </element>
+</schema>

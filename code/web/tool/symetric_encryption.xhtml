@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+   <h:head >
+
+      <title>Symmetric Encryption Tool</title>
+      <meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+      <link type="text/css" rel="stylesheet" href="#{request.contextPath}/resources/css/default.css" />
+   </h:head>
+   <h:body>
+
+      <div>
+         <h:form >
+            <p:outputPanel >
+               <h:panelGrid columns="9" > 
+                  <h:outputText value="Options :" />
+                  <p:selectOneMenu value="#{symetricEncForm.option}" >
+                     <f:selectItem  itemValue="1" itemLabel="Simple Encrypt" />
+                     <f:selectItem  itemValue="2" itemLabel="Encrypt with Salt" />
+                     <f:selectItem  itemValue="3" itemLabel="Encrypt with Salt n time" />
+                     <f:selectItem  itemValue="4" itemLabel="Encrypt  File" />    
+                     <f:selectItem  itemValue="5" itemLabel="Encrypt  URL" />                    
+                     <ui:remove>
+                        <f:selectItems  value="#{symetricEncForm.options}" />        
+                     </ui:remove>  
+                     <p:ajax listener="#{symetricEncForm.optionsChangeListener}" update="resultPanel"/>
+                  </p:selectOneMenu>
+
+                  <h:outputText value="Provider :" />
+                  <p:selectOneMenu id="providersOpt" value="#{symetricEncForm.provider}"  >
+                     <f:selectItems value="#{symetricEncForm.providers}" />
+                     <p:ajax event="change" listener="#{symetricEncForm.handleProviderChange}"
+                             update="serviceOpt algorithmOpt resultPanel"  />
+                  </p:selectOneMenu>     
+
+                  <h:outputText value="Service :" />
+                  <p:selectOneMenu id="serviceOpt" value="#{symetricEncForm.service}"  >
+                     <f:selectItems value="#{symetricEncForm.services}" />
+                     <p:ajax event="change" listener="#{symetricEncForm.handleServiceChange}"
+                             update="algorithmOpt resultPanel"  />
+                  </p:selectOneMenu>     
+
+                  <h:outputText value="Algorithm :" />
+                  <p:selectOneMenu id="algorithmOpt" value="#{symetricEncForm.algorithm}"  >
+                     <f:selectItems value="#{symetricEncForm.algorithms}"/>
+                     <p:ajax event="change" 
+                             update="resultPanel"  />
+                  </p:selectOneMenu>             
+              
+                                    <h:outputText value="MODE :" />
+                  <p:selectOneMenu id="algorithmMODE" value="#{symetricEncForm.mode}"  >
+                     <f:selectItems value="#{symetricEncForm.modes}"/>
+                     <p:ajax event="change" 
+                             update="resultPanel"  />
+                  </p:selectOneMenu>     
+                                    
+                                                      <h:outputText value="Size :" />
+                  <p:selectOneMenu id="algorithmSize" value="#{symetricEncForm.keySize}"  >
+                     <f:selectItems value="#{symetricEncForm.keySizes}"/>
+                     <p:ajax event="change" 
+                             update="resultPanel"  />
+                  </p:selectOneMenu>     
+                                                      
+                  
+               </h:panelGrid>
+               <p:separator/>
+
+
+               <p:panel id="resultPanel">
+
+                  <p:outputPanel id="panel"  >
+                     <h:panelGrid columns="2" >
+
+                        <h:panelGrid columns="1" >
+                           <p:panel header ="Data Input">
+                              <h:panelGroup id="inputGroutp" >
+                                 <h:panelGrid columns="8" >
+                                    <h:outputText value="String :" />
+                                    <p:inputTextarea value="#{symetricEncForm.input}" rows="3" cols="40" autoResize="false">
+                                       <p:ajax event="keyup" listener="#{symetricEncForm.encrypt}" process="@form"
+                                               update="inHex inBase64 encryptGroput decryptGroput"  />
+                                    </p:inputTextarea>
+
+                                    <h:outputText value="Hex:" rendered="#{symetricEncForm.option ne '4'}"/>
+                                    <p:inputTextarea id="inHex" value="#{symetricEncForm.inputHex}" rows="3" cols="40" readonly="true" >
+                                    </p:inputTextarea>
+
+                                    <h:outputText value="Base64 :" rendered="#{symetricEncForm.option ne '4'}"/>
+                                    <p:inputTextarea id="inBase64" value="#{symetricEncForm.inputBase64}" rows="3" cols="40" readonly="true" >
+                                    </p:inputTextarea>
+
+                                 </h:panelGrid>
+                              </h:panelGroup>
+                           </p:panel>
+                           <p:panel header="Encryption" >
+                              <h:panelGroup id="encryptGroput" >
+                                 <h:panelGrid columns="8" >
+                                    <h:outputText value="String :" />
+                                    <p:inputTextarea value="#{symetricEncForm.inputEncrypted}" rows="3" cols="40" readonly="true" >
+                                    </p:inputTextarea>
+
+                                    <h:outputText value="Hex:" rendered="#{symetricEncForm.option ne '4'}"/>
+                                    <p:inputTextarea value="#{symetricEncForm.hexEncrypted}" rows="3" cols="40" readonly="true" >
+                                    </p:inputTextarea>
+
+                                    <h:outputText value="Base64 :" rendered="#{symetricEncForm.option ne '4'}"/>
+                                    <p:inputTextarea value="#{symetricEncForm.base64Encrypted}" rows="3" cols="40" readonly="true" >
+                                    </p:inputTextarea>        
+
+                                 </h:panelGrid>                              
+                              </h:panelGroup>
+                           </p:panel>
+                           <p:panel header="Decryption" >
+                              <h:panelGroup id="decryptGroput" >
+                                 <h:panelGrid columns="8" >
+                                    <h:outputText value="String :" />
+                                    <p:inputTextarea value="#{symetricEncForm.outputDecrypted}" rows="3" cols="40" readonly="true" >
+                                    </p:inputTextarea>
+
+                                    <h:outputText value="Hex:" rendered="#{symetricEncForm.option ne '4'}"/>
+                                    <p:inputTextarea value="#{symetricEncForm.hexDecrypted}" rows="3" cols="40" readonly="true" >
+                                    </p:inputTextarea>
+
+                                    <h:outputText value="Base64 :" rendered="#{symetricEncForm.option ne '4'}"/>
+                                    <p:inputTextarea value="#{symetricEncForm.base64Decrypted}" rows="3" cols="40" readonly="true" >
+                                    </p:inputTextarea>
+                                 </h:panelGrid>                              
+                              </h:panelGroup>
+                           </p:panel>
+                        </h:panelGrid>
+                     </h:panelGrid>
+                  </p:outputPanel>
+               </p:panel>
+               <ui:remove > 
+               </ui:remove>
+            </p:outputPanel>
+         </h:form>
+      </div>
+
+   </h:body>
+</html>

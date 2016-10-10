@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<f:view  xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+         xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+         xmlns:p="http://primefaces.org/ui"
+         xmlns:c="http://java.sun.com/jstl/core">
+
+   <p:panel>    
+      <script language="javascript">
+			dp.SyntaxHighlighter.ClipboardSwf = '#{request.contextPath}/syntaxhighlighter/scripts/clipboard.swf';
+			dp.SyntaxHighlighter.HighlightAll('rawResponsePre');
+      </script>
+
+      <ui:remove>
+         POST :#{soapResponseBean.mimeHeaders['POST']}
+         Accept-Encoding:#{soapResponseBean.mimeHeaders['Accept']}
+         Content-Type:#{soapResponseBean.mimeHeaders['Content-Type']}
+         SOAPAction:#{soapResponseBean.mimeHeaders['SOAPAction']}
+         User-Agent:#{soapResponseBean.mimeHeaders['User-Agent']}
+         Host:#{soapResponseBean.mimeHeaders['Host']}
+         Content-Length:#{soapResponseBean.mimeHeaders['Content-Length']}
+      </ui:remove>
+
+      <pre name="rawResponsePre" class="xml" width="300" >
+#{soapResponseBean.responseHeader}
+<h:outputText value="#{soapResponseBean.soapTextFormat}" rendered="#{not encryptionForm.decrypted}"/>
+<h:outputText value="#{soapResponseBean.soapDecryptedMsg}" rendered="#{encryptionForm.decrypted}"/>
+      </pre>
+   </p:panel>
+
+</f:view>

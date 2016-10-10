@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<f:view  xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+         xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+         xmlns:p="http://primefaces.org/ui">
+
+<p:panel> 
+      <script language="javascript">
+			dp.SyntaxHighlighter.ClipboardSwf = '#{request.contextPath}/syntaxhighlighter/scripts/clipboard.swf';
+			dp.SyntaxHighlighter.HighlightAll('xmlResponsePre');
+      </script>
+      <pre name="xmlResponsePre" class="xml" width="300">
+#{soapResponseBean.responseHeader}
+<h:outputText value="#{soapResponseBean.soapXMLFormat}" rendered="#{not encryptionForm.decrypted}"/>
+<h:outputText value="#{soapResponseBean.soapDecryptedXML}" rendered="#{encryptionForm.decrypted}"/>
+      </pre>
+</p:panel>
+
+</f:view>

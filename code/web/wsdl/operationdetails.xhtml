@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+   <ui:define name="pageTitle">
+      <h:outputText value="Operation Details" />
+   </ui:define>
+
+   <h:head>
+
+      <script type="text/css">
+         .creteMessageButton{
+         background-image:
+         url(#{request.contextPath}/resources/images/button/10.png);
+         background-repeat: no-repeat;
+         padding-left: 18px !important;
+         }
+      </script>
+   </h:head>
+   <h:body>
+      <ui:composition>
+
+         <p:outputPanel id="operationPanel">   
+            <p:panel>
+
+               <p:commandButton  id="createMessageBtn" value = "Create soap message" disabled="#{pageViewController.createSoapButton}"
+                                action="#{operationDeailsForm.createSOAPRequest}" />
+
+            </p:panel>
+            <p:panel id="operationDetailPanel" header="WSDL Operation">
+               <h:panelGrid columns="2" rules="all" width="100%">
+
+                  <h:outputText value="Operation Name " rendered="#{operationBean.name ne null}"/>
+                  <h:outputLabel value="#{operationBean.name}" />
+                  <h:outputText value="QName " />
+                  <h:outputLabel value="#{operationBean.qname}" />
+                  <h:outputText value="Drescription " rendered="#{operationBean.documentation ne null}" />
+                  <h:outputLabel value="#{operationBean.documentation}" rendered="#{operationBean.documentation ne null}"/>
+                  <h:outputText value="Signature " />
+                  <h:outputLabel value="#{operationBean.signature}" />
+                  <h:outputText value="Parameter Ordering " />
+                  <h:outputLabel value="operationBean.parameterOrdering" />
+                  <h:outputText value="Faults " />
+                  <h:outputLabel value="#{operationBean.faults}" />
+                  <h:outputText value="Input " />
+                  <h:outputLabel value="#{operationBean.input}" />
+                  <h:outputText value="Output " />
+                  <h:outputLabel value="#{operationBean.output}" />
+                  <h:outputText value="Other Attributes  " />
+                  <h:outputLabel value="#{operationBean.otherAttributes}" />
+                  <h:outputText value="Other Elements  " />
+                  <h:outputLabel value="#{operationBean.otherElements}" />
+
+               </h:panelGrid>
+            </p:panel>
+
+            <p:panel id="bindingOperationDetailPanel"
+                     header="WSDL Binding Operation">
+
+               <h:panelGrid columns="2" rules="all" width="100%">
+                  <h:outputText value="Operation Name " />
+                  <h:outputLabel value="#{bindingOperationBean.name}" />
+                  <h:outputText value="QName " />
+                  <h:outputLabel value="#{bindingOperationBean.qname}" />
+                  <h:outputText value="Drescription " />
+                  <h:outputLabel value="#{bindingOperationBean.documentation}" />
+                  <h:outputText value="HttpMethod " />
+                  <h:outputLabel value="#{bindingOperationBean.httpMethod}" />
+                  <h:outputText value="Style " />
+                  <h:outputLabel value="#{bindingOperationBean.style}" />
+                  <h:outputText value="Soap Action " />
+                  <h:outputLabel value="#{bindingOperationBean.soapAction}" />
+                  <h:outputText value="Namespace URI " />
+                  <h:outputLabel value="#{bindingOperationBean.namespaceURI}" />
+                  <h:outputText value="Http Input Serialization " />
+                  <h:outputLabel
+                     value="#{bindingOperationBean.httpInputSerialization}" />
+                  <h:outputText value="Http Content Encoding Default " />
+                  <h:outputLabel
+                     value="#{bindingOperationBean.httpContentEncodingDefault}" />
+                  <h:outputText value="MEP " />
+                  <h:outputLabel value="#{bindingOperationBean.MEP}" />
+                  <h:outputText value="Http Method " />
+                  <h:outputLabel value="#{bindingOperationBean.httpMethod}" />
+                  <h:outputText value="Http Output Serialization " />
+                  <h:outputLabel
+                     value="#{bindingOperationBean.httpOutputSerialization}" />
+                  <h:outputText value="Http Query Parameter Separator : " />
+                  <h:outputLabel
+                     value="#{bindingOperationBean.httpQueryParameterSeparator}" />
+                  <h:outputText value="Faults " />
+                  <h:outputLabel value="#{bindingOperationBean.faults}" />
+                  <h:outputText value="Input " />
+                  <h:outputLabel value="#{bindingOperationBean.input}" />
+                  <h:outputText value="Output  " />
+                  <h:outputLabel value="#{bindingOperationBean.output}" />
+                  <h:outputText value="OtherAttributes  " />
+                  <h:outputLabel value="#{bindingOperationBean.otherAttributes}" />
+                  <h:outputText value="OtherElements  " />
+                  <h:outputLabel value="#{bindingOperationBean.otherElements}" />
+                  <h:outputText value="OperationBean  " />
+                  <h:outputLabel value="#{bindingOperationBean.operation}" />
+
+               </h:panelGrid>
+            </p:panel>
+         </p:outputPanel>
+
+         <p:blockUI block="operationPanel" trigger="createMessageBtn" >  
+            creating<br />  
+            <p:graphicImage value="/resources/images/ajaxloading.gif"/>
+         </p:blockUI>
+      </ui:composition>
+   </h:body>
+</html>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:p="http://primefaces.org/ui">
+
+   <p:panel id="samlAuthzPanel" styleClass="panel-backgound">
+      <p:fieldset legend="SAML Authorization Assertion " >  
+
+         <h:panelGrid columns="2">            
+            <h:outputLabel value="SAML Version  " />
+            <p:selectOneMenu value="#{samlAuthzForm.samlBean.version}">
+               <f:selectItem itemLabel="Select One" itemValue="" />     
+               <f:selectItems value="#{samlAuthzForm.verstions}" /> 
+            </p:selectOneMenu>
+            <h:outputLabel value="Expire In  " />
+            <p:inputText value="#{samlAuthzForm.samlBean.expireInMin}"
+                         required="true" requiredMessage="Expire In cannot be null."/>
+
+            <h:outputLabel value="Issuer Name  " />
+            <p:inputText value="#{samlAuthzForm.samlBean.issuer}" 
+                          required="true" requiredMessage="Issuer Name cannot be null."/>
+
+            <h:outputLabel value="Method  " />
+            <p:selectOneMenu value="#{samlAuthzForm.samlBean.subConfirmationMethod}">  
+               <f:selectItem itemLabel="Select One" itemValue="" />     
+               <f:selectItems value="#{samlAuthzForm.subConfirmationMethods}" /> 
+            </p:selectOneMenu>
+
+            <h:outputLabel value="Name Id format  " />
+            <p:selectOneMenu value="#{samlAuthzForm.samlBean.nameIdFormat}">
+               <f:selectItem itemLabel="Select One" itemValue="" />     
+               <f:selectItems value="#{samlAuthzForm.nameIdFormats}" /> 
+            </p:selectOneMenu>
+            <h:outputLabel value="Resource  " />
+            <p:inputText value="#{samlAuthzForm.samlBean.resource}" required="true"/>
+
+            <h:outputLabel value="Action  " />
+            <p:inputText value="#{samlAuthzForm.samlBean.action}" required="true"/>
+
+         </h:panelGrid>
+      </p:fieldset>
+      <br/>
+
+      <div style="text-align:  right">
+         <h:panelGroup >
+            <p:commandButton value="Save"  action="#{samlAuthzForm.addAuthz}" 
+                             update="subRequestTab,:messageForm:messagesGrowl" oncomplete="samlAuthzDlg.hide()"/> 
+            <p:commandButton value="Cancel" type="button" onclick="samlAuthzDlg.hide()"/>
+         </h:panelGroup>
+      </div>
+
+
+   </p:panel> 
+</f:view>

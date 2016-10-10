@@ -1,0 +1,63 @@
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" 
+     xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:define name="pageTitle">
+	<h:outputText value="Service Details" />
+</ui:define>
+
+<h:head>
+
+</h:head>
+<h:body>
+	<ui:composition>
+
+		<p:outputPanel>
+			<p:panel header="WSDL Service (#{serviceBean.name})">
+				<h:panelGrid columns="2" width="100%" rules="all">
+					<h:outputText value="Service Name " />
+					<h:outputLabel value="#{serviceBean.name}" />
+					<h:outputText value="Qname " />
+					<h:outputLabel value="#{serviceBean.qname}" />
+					<h:outputText value="Documentation " />
+					<h:outputLabel value="#{serviceBean.documentation}" />
+					<h:outputText value="NamespaceURI " />
+					<h:outputLabel value="#{serviceBean.namespaceURI}" />
+					<h:outputText value="OtherAttributes" />
+					<h:outputLabel value="#{serviceBean.otherAttributes}" />
+					<h:outputText value="Other Elements" />
+					<h:outputLabel value="#{serviceBean.otherElements}" />
+					<h:outputText value="Endpoints" />
+					<h:outputLabel value="#{serviceBean.endpoints}" />
+					<h:outputText value="Interfacs" />
+					<h:outputLabel value="#{serviceBean.interfaceType}" />
+				</h:panelGrid>
+			</p:panel>
+			<p:panel id="interfaceEndpointTablePanel">
+				<p:dataTable var="endpoint" rowIndexVar="row" resizableColumns="true" value="#{serviceBean.endpoints}">
+					<p:column style="width:15px;text-align:center;">
+						<f:facet name="header">
+							<h:outputText value="No." />
+						</f:facet>
+						<h:outputText value="#{row +1}" />
+					</p:column>
+					<p:column style="width:200px;text-align:center;">
+						<f:facet name="header">
+							<h:outputText value="Endpoint Name" />
+						</f:facet>
+						<h:outputText value="#{endpoint.name}" />
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+			<p:panel id="interfaceServiceTablePanel">
+				<h:outputText value="Interfacs" />
+				<h:outputLabel value="#{serviceBean.interfaceType}" />
+			</p:panel>
+
+
+		</p:outputPanel>
+	</ui:composition>
+</h:body>
+</html>

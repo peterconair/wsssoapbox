@@ -1,0 +1,48 @@
+<f:view  xmlns="http://www.w3.org/1999/xhtml"
+         xmlns:h="http://java.sun.com/jsf/html"
+         xmlns:f="http://java.sun.com/jsf/core"
+         xmlns:ui="http://java.sun.com/jsf/facelets"
+         xmlns:p="http://primefaces.org/ui">
+
+   <h:form id="preFerrenceForm">    
+      <div style="width: 680px; height: 510px; 
+           overflow: visible; position: relative;" 
+           class="ui-layout-container">
+
+         <p:panel 
+                  style="position: absolute;  margin-left: 0px; margin-top: 0px;
+                  height: 455px; width: 105px; z-index: 30;  display: block;">
+
+            <p:dataTable id ="linkDataTable" value="#{preferenceController.pages}" var="p" >
+               <p:column style=" width: 85px; text-align:  center ">
+                  <p:commandLink id="preferencePageLink" action="#{preferenceController.selectedPage(p.name)}"                                    
+                                 update="@form"> 
+                     <h:outputText value="#{p.name}" />
+                  </p:commandLink>
+               </p:column>
+            </p:dataTable>
+
+         </p:panel>
+         <p:panel  styleClass="panel-backgound"        
+                   style="position: absolute; margin-left:112px; margin-right: 3px; top: 0px;  
+                   height: 455px; width: 558px; z-index: 20; 
+                   display: block;">
+
+            <p:outputPanel id="preContentPanel">
+               <ui:include src="#{preferenceController.page.pageLocation}" />
+            </p:outputPanel>
+         </p:panel>
+         <p:panel styleClass="panel-backgound"
+            style="position: absolute; margin: 0px; top: auto; bottom: 0px; left: 0px; right: 0px;                      
+            height: 40px; width: 670px; z-index: 10; display: block; ">
+
+            <div style="text-align:  right">
+               <h:panelGroup >
+                  <p:commandButton value="OK"  type="button" onclick="mainPreferenceVar.hide();"/>
+                  <p:commandButton value="Cancel"  type="button" onclick="mainPreferenceVar.hide();"/>
+               </h:panelGroup>
+            </div>
+         </p:panel>
+      </div>
+   </h:form>
+</f:view>

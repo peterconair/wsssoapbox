@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:p="http://primefaces.org/ui">
+
+   <p:panel id="samlAuthPanel" styleClass="panel-backgound">
+      <p:fieldset legend="SAML Authentication Assertion " >  
+
+         <h:panelGrid columns="1">            
+            <h:panelGrid columns="2"> 
+               <h:outputLabel value="SAML Version  " />
+               <p:selectOneMenu value="#{samlAuthForm.samlBean.version}">
+                  <f:selectItem itemLabel="Select One" itemValue="" />     
+                  <f:selectItems value="#{samlAuthForm.verstions}" /> 
+               </p:selectOneMenu>
+
+               <h:outputLabel value="Issuer Name  " />
+               <p:inputText value="#{samlAuthForm.samlBean.issuer}" size="50"/>
+            </h:panelGrid>
+
+            <p:fieldset legend="Subject Confirmation " >  
+               <h:panelGrid columns="1"> 
+                  <h:panelGroup>
+                     <h:outputLabel value="Method  " />
+                     <p:selectOneMenu value="#{samlAuthForm.samlBean.subConfirmationMethod}">  
+                        <f:selectItem itemLabel="Select One" itemValue="" />     
+                        <f:selectItems value="#{samlAuthForm.subConfirmationMethods}" /> 
+                        <p:ajax listener="#{samlAuthForm.handleMethodChange}" 
+                                update="authCertPanel"/>
+                     </p:selectOneMenu>   
+                  </h:panelGroup>
+                  <h:panelGroup id="authCertPanel" rendered="#{samlAuthForm.holderOfKey}">
+                     <p:fieldset  legend="Certificates">  
+                        <h:panelGrid columns="4">
+                           <h:outputText value="Key Store "  />
+                           <p:selectOneMenu id="AuthSignKeyStoreSelect" value="#{samlAuthForm.keyStoreName}">  
+                              <f:selectItem itemLabel="Select KeyStore" itemValue="" />
+                              <f:selectItems value="#{samlAuthForm.keyStores}" />  
+                              <p:ajax update="AuthSignAliasNameSelect"  
+                                      listener="#{samlAuthForm.handleKeyStoreChange}" />  
+                           </p:selectOneMenu>  
+                           <h:outputText value="Alias Name " />
+                           <p:selectOneMenu id="AuthSignAliasNameSelect" value="#{samlAuthForm.aliasName}" >  
+                              <f:selectItems value="#{samlAuthForm.aliasNames}" />  
+                           </p:selectOneMenu>  
+                           <h:outputText value="Password " />
+                           <p:inputText value="#{samlAuthForm.password}" />
+                        </h:panelGrid>
+                     </p:fieldset>
+                  </h:panelGroup>
+
+
+                  <h:panelGroup>
+                     <h:outputLabel value="Name Id format  " />
+                     <p:selectOneMenu value="#{samlAuthForm.samlBean.nameIdFormat}">
+                        <f:selectItem itemLabel="Select One" itemValue="" />     
+                        <f:selectItems value="#{samlAuthForm.nameIdFormats}" /> 
+                     </p:selectOneMenu>
+                  </h:panelGroup>
+                  <h:panelGroup>
+                     <h:outputLabel value="Subject Name  " />
+                     <p:inputText value="#{samlAuthForm.samlBean.subjectName}" 
+                                  size="45" />
+                  </h:panelGroup>
+               </h:panelGrid>
+            </p:fieldset>
+            <p:fieldset legend="Condition " > 
+               <h:panelGrid columns="2"> 
+                  <h:outputLabel value="Expire In  " />
+                  <p:inputText value="#{samlAuthForm.samlBean.expireInMin}"  
+                               maxlength="5"/>
+                  <h:outputLabel value="Audience Restriction " />
+                  <p:inputText value="#{samlAuthForm.samlBean.audience}" size="35"/>
+               </h:panelGrid>
+            </p:fieldset>
+            <br/>
+            <h:panelGrid columns="2"> 
+               <h:outputLabel value="Authentication Context  " />
+               <p:selectOneMenu value="#{samlAuthForm.samlBean.authContext}">  
+                  <f:selectItem itemLabel="Select One" itemValue="" />     
+                  <f:selectItems value="#{samlAuthForm.authContexts}" /> 
+               </p:selectOneMenu>
+            </h:panelGrid>
+         </h:panelGrid>
+
+         <h:panelGroup>
+            <h:outputLabel id="signingKey" value="Sign Assertion" />
+            <p:selectBooleanCheckbox value="#{samlAuthForm.signed}">
+               <p:ajax update="outTest"/>
+            </p:selectBooleanCheckbox>
+         </h:panelGroup>
+         <h:outputText rendered="#{samlAuthForm.signed}" id="outTest" value="Test "/>
+
+      </p:fieldset>
+      <br/>
+
+      <div style="text-align:  right">
+         <h:panelGroup >
+            <p:commandButton value="Save"  action="#{samlAuthForm.addAuth()}"
+                             update="subRequestTab,:messageForm:messagesGrowl" oncomplete="samlAuthDlg.hide()"/> 
+            <p:commandButton value="Cancel" type="button" onclick="samlAuthDlg.hide()"/>
+         </h:panelGroup>
+      </div>
+
+
+   </p:panel> 
+</f:view>

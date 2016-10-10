@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1">
+        <file>
+            <url>src/java/org/wsssoapbox/soap/support/SoapCreator.java</url>
+            <line>533</line>
+        </file>
+        <file>
+            <url>src/java/org/wsssoapbox/soap/SoapCreator.java</url>
+            <line>119</line>
+        </file>
+        <file>
+            <url>src/test/soap/security/usernametoken/encryption/XWSSDecryptionTest.java</url>
+            <line>229</line>
+            <line>424</line>
+            <line>511</line>
+        </file>
+        <file>
+            <url>src/test/soap/security/encryption/XWSSDecryptionTest.java</url>
+            <line>245</line>
+            <line>386</line>
+        </file>
+    </editor-bookmarks>
+</project-private>

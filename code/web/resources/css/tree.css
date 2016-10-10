@@ -1,0 +1,235 @@
+@CHARSET "ISO-8859-1";
+
+.ui-icon1 {
+	text-align: left;
+	margin: 0;
+	overflow: hidden;
+	background-repeat: no-repeat;
+	width: 48px;
+	height: 1px;
+}
+
+.ui-icon-folder-open {
+	background-image:
+		url(#{request.contextPath}/resources/images/tree/document.gif);
+	background-repeat: no-repeat;
+}
+
+.ui-icon-folder-collapsed {
+	background-image:
+		url(#{request.contextPath}/resources/images/tree/document.gif);
+	background-repeat: no-repeat;
+}
+
+.documentStyle {
+	background-image:
+		url(#{request.contextPath}/resources/images/tree/document.gif);
+	background-repeat: no-repeat;
+	padding-left: 30px !important;
+}
+
+.endpointStyle {
+	background-image:
+		url(#{request.contextPath}/resources/images/tree/endpoint.png);
+	background-repeat: no-repeat;
+	padding-left: 30px !important;
+}
+
+.serviceStyle {
+	background-image:
+		url(#{request.contextPath}/resources/images/tree/service.png);
+	background-repeat: no-repeat;
+	padding-left: 0px !important;
+}
+
+.operationStyle {
+	background-image:
+		url(#{request.contextPath}/resources/images/tree/operation.gif);
+	background-repeat: no-repeat;
+}
+
+.requestStyle {
+	background-image:
+		url(#{request.contextPath}/resources/images/tree/request.gif);
+	background-repeat: no-repeat;
+}
+
+.responseStyle {
+	background-image:
+		url(#{request.contextPath}/resources/images/tree/response.gif);
+	background-repeat: no-repeat;
+}
+
+.icon-ppt {
+	display: block;
+	height: 22px;
+	padding-left: 20px;
+	background: transparent
+		url(#{request.contextPath}/resources/images/tree/icons.png) 0 0px
+		no-repeat;
+}
+
+.icon-dmg {
+	display: block;
+	height: 22px;
+	padding-left: 20px;
+	background: transparent
+		url(#{request.contextPath}/resources/images/tree/icons.png) 0 -36px
+		no-repeat;
+}
+
+.icon-prv {
+	display: block;
+	height: 22px;
+	padding-left: 20px;
+	background: transparent
+		url(#{request.contextPath}/resources/images/tree/icons.png) 0 -72px
+		no-repeat;
+}
+
+.icon-gen {
+	display: block;
+	height: 22px;
+	padding-left: 20px;
+	background: transparent
+		url(#{request.contextPath}/resources/images/tree/icons.png) 0 -108px
+		no-repeat;
+}
+
+.icon-doc {
+	display: block;
+	height: 22px;
+	padding-left: 20px;
+	background: transparent
+		url(#{request.contextPath}/resources/images/tree/icons.png) 0 -144px
+		no-repeat;
+}
+
+.icon-jar {
+	display: block;
+	height: 22px;
+	padding-left: 20px;
+	background: transparent
+		url(#{request.contextPath}/resources/images/tree/icons.png) 0 -180px
+		no-repeat;
+}
+
+.icon-zip {
+	display: block;
+	height: 22px;
+	padding-left: 20px;
+	background: transparent
+		url(#{request.contextPath}/resources/images/tree/icons.png) 0 -216px
+		no-repeat;
+}
+
+.htmlnodelabel {
+	margin-left: 20px;
+}
+
+/* Folder Theme */
+.ygtvtn {
+	background: url(../images/folders/tn.gif) 0 0 no-repeat;
+	width: 17px;
+	height: 22px;
+}
+
+.ygtvtm {
+	background: url(../images/folders/tm.gif) 0 0 no-repeat;
+	width: 34px;
+	height: 22px;
+	cursor: pointer
+}
+
+.ygtvtmh {
+	background: url(../images/folders/tmh.gif) 0 0 no-repeat;
+	width: 34px;
+	height: 22px;
+	cursor: pointer
+}
+
+.ygtvtp {
+	background: url(../images/folders/tp.gif) 0 0 no-repeat;
+	width: 34px;
+	height: 22px;
+	cursor: pointer
+}
+
+.ygtvtph {
+	background: url(../images/folders/tph.gif) 0 0 no-repeat;
+	width: 34px;
+	height: 22px;
+	cursor: pointer
+}
+
+.ygtvln {
+	background: url(../images/folders/ln.gif) 0 0 no-repeat;
+	width: 17px;
+	height: 22px;
+}
+
+.ygtvlm {
+	background: url(../images/folders/lm.gif) 0 0 no-repeat;
+	width: 34px;
+	height: 22px;
+	cursor: pointer
+}
+
+.ygtvlmh {
+	background: url(../images/folders/lmh.gif) 0 0 no-repeat;
+	width: 34px;
+	height: 22px;
+	cursor: pointer
+}
+
+.ygtvlp {
+	background: url(../images/folders/lp.gif) 0 0 no-repeat;
+	width: 34px;
+	height: 22px;
+	cursor: pointer
+}
+
+.ygtvlph {
+	background: url(../images/folders/lph.gif) 0 0 no-repeat;
+	width: 34px;
+	height: 22px;
+	cursor: pointer
+}
+
+.ygtvloading {
+	background: url(../images/folders/loading.gif) 0 0 no-repeat;
+	width: 16px;
+	height: 22px;
+}
+
+.ygtvdepthcell {
+	background: url(../images/folders/vline.gif) 0 0 no-repeat;
+	width: 17px;
+	height: 22px;
+}
+
+.ygtvitem {
+	
+}
+
+.ygtvitem  table {
+	margin-bottom: 0;
+}
+
+.ygtvitem  td {
+	border: none;
+	padding: 0;
+}
+
+.ygtvchildren {
+	
+}
+
+* html .ygtvchildren {
+	height: 1%;
+}
+
+.ygtvlabel,.ygtvlabel:link,.ygtvlabel:visited,.ygtvlabel:hover {
+	margin-left: 2px;
+	text-decoration: none;
+}

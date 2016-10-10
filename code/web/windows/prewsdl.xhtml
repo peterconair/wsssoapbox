@@ -1,0 +1,48 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:p="http://primefaces.org/ui">
+
+   WSDL 
+   <p:separator/> 
+   <p:outputPanel id="preWSDLPanel" >
+      <h:panelGrid columns="3">
+         First name : <p:inputText value="#{user.firstname}"> 
+         </p:inputText>
+         <h:outputText id="outName" value="#{user.firstname}" />
+
+         Last name :<p:inputText value="#{user.lastname}" />
+         <h:outputText  value="#{user.lastname}" />
+
+         Age : <p:inputText value="#{user.age}"/>
+         <h:outputText  value="#{user.age}" />
+
+         City : <p:inputText value="#{user.city}" />
+         <h:outputText value="#{user.city}" />
+
+      </h:panelGrid>
+   </p:outputPanel>
+   <p:commandButton value ="submit" update="preWSDLPanel" />
+
+   <p:commandButton id="basic" value="Show Dialog" onclick="wsdlPreferenceVar.show();" type="button" /> 
+   <p:dialog id="wsdlMainPreference" widgetVar="wsdlPreferenceVar" 
+             header="Add" 
+             height="200" 
+             width="300"    
+             draggable="true"
+             >
+      <h:outputText id="test" value="#{user.firstname}"/>
+      name :<h:inputText value="#{user.firstname}" />
+      <p:commandButton value="submit" update="test display"/>
+
+
+      <p:separator/> 
+
+      <p:outputPanel id="display" style="display:block;margin-top:10px;">  
+         <h:outputText id="name" value="Hello #{user.firstname}" rendered="#{not empty user.firstname}"/>  
+      </p:outputPanel> 
+   </p:dialog>
+
+</f:view>
+

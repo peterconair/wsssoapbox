@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<f:view  xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+         xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+         xmlns:p="http://primefaces.org/ui">
+
+   <h:form id="responseHeaderForm" prependId="false" >
+      <p:outputPanel id="soapResHeaderPanel">
+
+         <p:dataTable id ="soapResHeaderDataTable" 
+                      value="#{soapResponseBean.mimeHeaderLists}" 
+                      var="mimeHeader" 
+                      rowIndexVar="row" >
+            <p:column style="width: 50px; text-align: center">
+               <f:facet name="header">
+                  <h:outputText value="No." />
+               </f:facet>
+               <h:outputText value="#{row+1}" />
+            </p:column>
+            <p:column style="text-align: center">
+               <f:facet name="header">
+                  <h:outputText value="Header" />
+               </f:facet>
+               <h:outputText value="#{mimeHeader.header}" />
+            </p:column>
+            <p:column style="text-align: center">
+               <f:facet name="header">
+                  <h:outputText value="Value" />
+               </f:facet>
+               <h:outputText value="#{mimeHeader.value}" />
+            </p:column>
+         </p:dataTable>
+      </p:outputPanel>
+   </h:form>
+
+</f:view >

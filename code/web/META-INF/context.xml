@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context antiJARLocking="true" path="/wsssoapbox" >
+   
+<!-- Pong add for test database connection-->
+<!-- for Embedded 
+    <Resource name="jdbc/wsssoapboxDS" auth="Container"
+            type="javax.sql.DataSource" username="root" password="1234"
+            driverClassName="org.apache.derby.jdbc.EmbeddedDriver" 
+            url="jdbc:derby:Databases/wsssoapboxDB;create=true"
+            maxActive="8" 
+            /> 
+            -->
+    <!-- for Embedded -->        
+   <Resource name="jdbc/wsssoapboxDS" auth="Container"
+            type="javax.sql.DataSource" username="root" password="1234"
+            driverClassName="org.apache.derby.jdbc.ClientDriver" 
+            url="jdbc:derby://localhost:1527/wsssoapboxDB"
+            maxActive="8" />
+                      
+    
+    <!-- mysql 
+    <Resource name="jdbc/wsssoapboxDS" auth="Container"
+            type="javax.sql.DataSource" username="root" password=""
+            driverClassName="com.mysql.jdbc.Driver" 
+            url="jdbc:mysql://localhost:3306/wsssoapboxDB"
+            maxActive="8" 
+            />
+        --> 
+          
+ <!-- Turn off session serialization 
+    <Manager className="org.apache.catalina.session.PersistentManager"
+      debug="0" distributable="false" saveOnRestart="false">
+        <Store className="org.apache.catalina.session.FileStore"/>
+    </Manager>
+ -->
+ 
+</Context>

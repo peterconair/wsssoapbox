@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scene Scope="Project" version="2">
+    <Scope Scope="Faces Configuration Only"/>
+    <Scope Scope="Project">
+        <Node id="test/connectDerby.xhtml" x="650" y="1350" zoom="true"/>
+        <Node id="windows/preferenceMainPage.xhtml" x="1650" y="300" zoom="true"/>
+        <Node id="templates/test/ui.xhtml" x="900" y="300" zoom="true"/>
+        <Node id="test/newTemplateClient.xhtml" x="1650" y="150" zoom="true"/>
+        <Node id="soap/res_xml.xhtml" x="400" y="1200" zoom="true"/>
+        <Node id="test/inputText.xhtml" x="400" y="750" zoom="true"/>
+        <Node id="soap/attachment.xhtml" x="400" y="300" zoom="true"/>
+        <Node id="soap/security/cer/payment.xhtml" x="1900" y="300" zoom="true"/>
+        <Node id="main/home.xhtml" x="1150" y="450" zoom="true"/>
+        <Node id="soap/security/signature.xhtml" x="2650" y="150" zoom="true"/>
+        <Node id="test/test_remoteCommand.xhtml" x="400" y="900" zoom="true"/>
+        <Node id="wsdl/documentdetails.xhtml" x="1150" y="150" zoom="true"/>
+        <Node id="templates/common/header.xhtml" x="341" y="56" zoom="true"/>
+        <Node id="main/test.xhtml" x="1150" y="300" zoom="true"/>
+        <Node id="test/test.xhtml" x="2400" y="150" zoom="true"/>
+        <Node id="menu/topmenu.xhtml" x="900" y="150" zoom="true"/>
+        <Node id="soap/res_raw.xhtml" x="150" y="1500" zoom="true"/>
+        <Node id="admin/admin.xhtml" x="900" y="600" zoom="true"/>
+        <Node id="menu/themeMenu.xhtml" x="150" y="750" zoom="true"/>
+        <Node id="test/testFileUpload.xhtml" x="150" y="1050" zoom="true"/>
+        <Node id="soap/mimeHeader.xhtml" x="1400" y="450" zoom="true"/>
+        <Node id="windows/prewsdl.xhtml" x="150" y="150" zoom="true"/>
+        <Node id="soap/security/encryption.xhtml" x="400" y="1050" zoom="true"/>
+        <Node id="windows/theme.xhtml" x="400" y="600" zoom="true"/>
+        <Node id="soap/req_form.xhtml" x="900" y="900" zoom="true"/>
+        <Node id="menu/userInfo.xhtml" x="2400" y="450" zoom="true"/>
+        <Node id="soap/security/out_wss_config.xhtml" x="1650" y="750" zoom="true"/>
+        <Node id="soap/security/testUsernameToken.xhtml" x="1150" y="900" zoom="true"/>
+        <Node id="wsdl/importwsdl.xhtml" x="290" y="240" zoom="true"/>
+        <Node id="soap/security/samlAuthorization.xhtml" x="1150" y="1050" zoom="true"/>
+        <Node id="soap/res_outline.xhtml" x="1900" y="600" zoom="true"/>
+        <Node id="ui/treeIcons.xhtml" x="150" y="1200" zoom="true"/>
+        <Node id="templates/common/ui.xhtml" x="150" y="450" zoom="true"/>
+        <Node id="soap/req_outline.xhtml" x="650" y="900" zoom="true"/>
+        <Node id="test/testPage.xhtml" x="650" y="450" zoom="true"/>
+        <Node id="soap/security/cer/keystore.xhtml" x="1650" y="450" zoom="true"/>
+        <Node id="windows/presoap.xhtml" x="1150" y="600" zoom="true"/>
+        <Node id="index.jsp" x="150" y="600" zoom="true"/>
+        <Node id="main/treemenu.xhtml" x="1400" y="150" zoom="true"/>
+        <Node id="templates/common/ui_1.xhtml" x="2150" y="600" zoom="true"/>
+        <Node id="test/testDisplayXML.xhtml" x="400" y="450" zoom="true"/>
+        <Node id="soap/security/samlAuthentication.xhtml" x="400" y="1500" zoom="true"/>
+        <Node id="soap/res_attachment.xhtml" x="1900" y="150" zoom="true"/>
+        <Node id="soap/security/cer/ceritficates.xhtml" x="2150" y="150" zoom="true"/>
+        <Node id="soap/soapmessages.xhtml" x="271" y="380" zoom="true"/>
+        <Node id="soap/security/cer/keystore_1.xhtml" x="1900" y="750" zoom="true"/>
+        <Node id="wsdl/bindingdetails.xhtml" x="199" y="114" zoom="true"/>
+        <Node id="windows/preferences.xhtml" x="650" y="150" zoom="true"/>
+        <Node id="wsdl/servicesdetails.xhtml" x="1400" y="300" zoom="false"/>
+        <Node id="test/testTree.xhtml" x="653" y="74" zoom="true"/>
+        <Node id="soap/res_mimeHeader.xhtml" x="900" y="750" zoom="true"/>
+        <Node id="soap/req_raw.xhtml" x="1150" y="750" zoom="true"/>
+        <Node id="soap/security/usernameToken.xhtml" x="1650" y="600" zoom="true"/>
+        <Node id="soap/wssecurity.xhtml" x="400" y="150" zoom="true"/>
+        <Node id="windows/prelogging.xhtml" x="150" y="300" zoom="true"/>
+        <Node id="tool/symetric_encryption.xhtml" x="150" y="1350" zoom="true"/>
+        <Node id="soap/res_prety.xhtml" x="2150" y="300" zoom="true"/>
+        <Node id="main/login.xhtml" x="650" y="750" zoom="true"/>
+        <Node id="templates/common/footer.xhtml" x="650" y="600" zoom="true"/>
+        <Node id="wsdl/operationdetails.xhtml" x="150" y="900" zoom="true"/>
+        <Node id="soap/req_xml.xhtml" x="1400" y="750" zoom="true"/>
+        <Node id="test/treeIcons.xhtml" x="650" y="300" zoom="true"/>
+        <Node id="tool/hashing.xhtml" x="900" y="1050" zoom="true"/>
+        <Node id="tool/securetool.xhtml" x="650" y="1050" zoom="true"/>
+    </Scope>
+    <Scope Scope="All Faces Configurations"/>
+</Scene>

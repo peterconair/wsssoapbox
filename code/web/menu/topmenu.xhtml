@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<f:view  xmlns="http://www.w3.org/1999/xhtml" 
+         xmlns:ui="http://java.sun.com/jsf/facelets"
+         xmlns:f="http://java.sun.com/jsf/core" 
+         xmlns:h="http://java.sun.com/jsf/html"
+         xmlns:p="http://primefaces.org/ui">
+
+   <style type="text/css">
+      .preference-icon {
+         background: url(#{request.contextPath}/resources/images/menu/72.png) no-repeat;
+         background-repeat: no-repeat;
+         padding-left: 18px !important;
+      }
+
+   </style>
+
+   <h:form id="menuForm" prependId="false">
+      <p:menubar  >
+         <p:submenu label="File" icon="ui-icon ui-icon-document">
+            <p:submenu label="New" icon="ui-icon ui-icon-contact">
+               <p:menuitem value="Load Request"  />
+               <p:menuitem value="Import WSDL" icon="ui-icon-arrowthickstop-1-s" 
+                           url="/wsdl/importwsdl.xhtml" />
+
+               <p:menuitem value="Save Request" icon="ui-icon-disk" 
+                           disabled="#{soapRequestBean eq null}"/>
+               <p:menuitem value="Save Response" icon="ui-icon-disk"
+                           disabled="#{soapResponseBean eq null}" />
+
+            </p:submenu>         
+            <p:menuitem value="Logout" onclick="logoutCfmmDialog.show()" 
+                        icon="ui-icon-unlocked"/>
+         </p:submenu>
+         <ui:remove>
+            <p:submenu label="Edit" icon="ui-icon ui-icon-pencil">
+               <p:menuitem value="Undo" url="#"
+                           icon="ui-icon ui-icon-arrowreturnthick-1-w"></p:menuitem>
+               <p:menuitem value="Redo" url="#"
+                           icon="ui-icon ui-icon-arrowreturnthick-1-e" ></p:menuitem>
+            </p:submenu>
+         </ui:remove>
+         <p:submenu label="Security" icon="ui-icon ui-icon-pencil">
+            <p:menuitem value="Keystore" 
+                        disabled="#{keyStoreForm eq null}"
+                        icon="ui-icon-key"
+                        onclick="keyStoreDlg.show()"
+                        >
+
+            </p:menuitem>
+            <p:menuitem value="Tools" target="/tool/securetool.xhtml" url="/tool/securetool.xhtml" 
+                        ajax="false" update="none" immediate="true"
+                        icon="ui-icon ui-icon-arrowreturnthick-1-e" ></p:menuitem>
+         </p:submenu>
+         <p:submenu label="Windows" icon="ui-icon ui-icon-pencil">
+            <p:menuitem value="WSDL Doc" disabled="#{wSDLImportForm.wsdlDucument eq null}"
+                        icon="ui-icon-search"
+                        url="#{wSDLImportForm.wsdlFile}"
+                        target="#{wSDLImportForm.wsdlFile}"/>
+            <p:menuitem value="Navigator"  action="#{windowController.showNavigator}"
+                        icon="ui-icon-refresh">     
+            </p:menuitem>
+            <p:menuitem value="Logging"  url="/user/logger/log.xhtml" target="/user/logger/log.xhtml"
+                        icon="ui-icon-script">     
+            </p:menuitem>
+            <p:menuitem value="Preferences" onclick="mainPreferenceVar.show()"
+                        icon="ui-icon-wrench">
+            </p:menuitem>
+         </p:submenu>
+         <ui:remove>
+            <p:submenu label="Help" icon="ui-icon ui-icon-help">
+               <p:menuitem value="Contents" url="#" />
+               <p:submenu label="Search" icon="ui-icon ui-icon-search">
+                  <p:submenu label="Text">
+                     <p:menuitem value="Workspace" url="#" />
+                  </p:submenu>
+                  <p:menuitem value="File" url="#" />
+               </p:submenu>
+            </p:submenu>
+         </ui:remove>
+      </p:menubar>
+   </h:form>
+
+
+   <p:growl id="mainGrowl" showDetail="true" showSummary="true" autoUpdate="true"/>
+
+   <!-- Preference Page -->
+   <ui:include src="/windows/preferences.xhtml" />
+
+   <!-- Key Store dialog -->
+   <p:dialog  widgetVar="keyStoreDlg" header="Key Stores" 
+              width="700" height="550" appendToBody="true"
+              resizable="false" dynamic="true"  
+              draggable="true">
+      <ui:include src="/soap/security/cer/keystore.xhtml" />
+   </p:dialog>
+
+</f:view>

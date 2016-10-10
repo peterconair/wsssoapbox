@@ -1,0 +1,219 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package soap.security.encryption;
+
+import com.sun.org.apache.xml.internal.security.encryption.EncryptedData;
+import com.sun.xml.ws.security.EncryptedKey;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.security.Key;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.util.ArrayList;
+import java.util.Collections;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import javax.xml.crypto.dsig.keyinfo.KeyInfo;
+import javax.xml.crypto.dsig.keyinfo.KeyInfoFactory;
+import javax.xml.crypto.dsig.keyinfo.KeyName;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.soap.Node;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
+/**
+ *
+ * @author Peter
+ */
+public class XMLEncryptionSample {
+   //This sample demonstrates using the XML encryption APIs. It encrypts a piece of XML document, the 
+//Content element, into EncryptedData using the AES key, which is encrypted in EncryptedKey. Then
+//the program decrypts the AES key, and uses it to decrypt the encrypted content. For
+//demonstration purpose, the plaintext Content element remains in the XML file.
+
+   private XMLEncryptionFactory fac;
+   private KeyInfoFactory kfac;
+   private DocumentBuilderFactory dbf;
+   private String xmlfile;
+   private KeyPair kp;  //the key pair used to encrypt and decrypt the secret key
+   private SecretKey key; //the secret key used to encryt and decrypt the content
+
+   //constructor, initialize instance variables
+   public XMLEncryptionSample() throws Exception {
+      //java.security.Security.addProvider(new org.jcp.xml.enc.internal.dom.XMLEncRI());
+      fac = XMLEncryptionFactory.getInstance("DOM", "IBMXMLEnc");
+      xmlfile = "encrypted.xml";
+      dbf = DocumentBuilderFactory.newInstance();
+      dbf.setNamespaceAware(true);
+      //generate the RSA key pair
+      KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
+      kpg.initialize(512);
+      System.out.println("Generating the RSA key pair...");
+      kp = kpg.generateKeyPair();
+   }
+
+   public static void main(String[] args) {
+      try {
+         XMLEncryptionSample sample = new XMLEncryptionSample();
+         //builds the XML document
+         Element envelope = sample.createXMLDocument();
+         //encrypt the Content in this document
+         sample.encrypt(envelope);
+         //decrypt the Content
+         sample.decrypt();
+      } catch (Exception ex) {
+         ex.printStackTrace();
+      }
+   }
+
+   Element createXMLDocument() throws Exception {
+      dbf.setNamespaceAware(true);
+      DocumentBuilder db = dbf.newDocumentBuilder();
+      Document doc = db.newDocument();
+      Element envelope = doc.createElementNS("http://example.org/envelope", "Envelope");
+      envelope.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns", "http://example.org/envelope");
+      doc.appendChild(envelope);
+      Element content = doc.createElementNS("http://exampl.org/content", "Content");
+      content.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns", "http://example.org/content");
+      content.setTextContent("This is XML encryption sample");
+      envelope.appendChild(content);
+      return envelope;
+   }
+
+   private void encrypt(Element envelope) throws Exception {
+      encryptKey(envelope);
+      encryptContent(envelope);
+   }
+
+   private void decrypt() throws Exception {
+      System.out.println("Reading xml document " + this.xmlfile);
+      FileInputStream fis = new FileInputStream(this.xmlfile);
+      DocumentBuilder builder = dbf.newDocumentBuilder();
+      //parse the xml file
+      Document document = builder.parse(fis);
+      NodeList nlist = document.getElementsByTagName("EncryptedKey");
+      Element node = (Element) nlist.item(0);
+      //get the secret key
+      Key key2 = decryptKey(node);
+      //compare the decrypted key with the original key
+      byte[] key2data = key2.getEncoded();
+      byte[] keydata = key.getEncoded();
+      System.out.println("After decryption, does it match the original key? " + java.util.Arrays.equals(key2data, keydata));
+      decryptContent(key2, document);
+   }
+
+   private void decryptContent(Key key, Document doc) throws Exception {
+      NodeList list = doc.getElementsByTagName("EncryptedData");
+      Element node = (Element) list.item(0);
+      //create the decryption context
+      DOMDecryptContext dctx = new DOMDecryptContext(key, node);
+      //unmarshal encrypted data
+      EncryptedData encdata = (EncryptedData) fac.unmarshalEncryptedType(dctx);
+      System.out.println("Decrypting...");
+      InputStream is = encdata.decrypt(dctx);
+      byte[] decryptedText = new byte[is.available()];
+      is.read(decryptedText);
+
+      //show the result
+      System.out.println("Decrypted text:");
+      System.out.println(new String(decryptedText));
+      System.out.println("\nDone");
+   }
+
+   private Key decryptKey(Element node) throws Exception {
+      DOMDecryptContext dctx = new DOMDecryptContext(kp.getPrivate(), node);
+      EncryptedKey dedata = (EncryptedKey) fac.unmarshalEncryptedType(dctx);
+      EncryptionMethod em = fac.newEncryptionMethod(EncryptionMethod.AES128_CBC,
+              new Integer(128),
+              null);
+
+      System.out.println("Decrypting the secret key...");
+      Key key2 = dedata.decryptKey(dctx, em);
+      return key2;
+   }
+
+   //encrypt the content with secret key
+   private void encryptContent(Element envelope) throws Exception {
+      NodeList nlist = envelope.getElementsByTagName("Content");
+      Element elem = (Element) nlist.item(0);
+      ToBeEncrypted tbeElement = new DOMToBeEncryptedXML(elem, null);
+      KeyName kn = kfac.newKeyName("Alice");
+      ArrayList kiTypes = new ArrayList();
+      kiTypes.add(kn);
+      KeyInfo ki = kfac.newKeyInfo(kiTypes); //keyinfo includes retrievalmethod and keyname
+      EncryptionMethod em = fac.newEncryptionMethod(EncryptionMethod.AES128_CBC,
+              new Integer(128),
+              null);
+      EncryptedData ed = fac.newEncryptedData(
+              tbeElement, //the data to be encrypted
+              em, //encryption method is AES 
+              ki, //key info
+              null, //EncryptionProperties
+              null);       //id
+      XMLEncryptContext xec = new DOMEncryptContext(key, envelope);
+      System.out.println("Encrypting data...");
+      ed.encrypt(xec);
+      System.out.println("Write the XML document to file " + this.xmlfile);
+      writeDoc(envelope, this.xmlfile);
+   }
+
+   //encrypt the secret key that is used to encrypt the content
+   public void encryptKey(Element envelope) throws Exception {
+      EncryptedKey encryptedKey = createEncryptedKey();
+      //create the encryption context with public key and xml element
+      XMLEncryptContext ekxec = new DOMEncryptContext(kp.getPublic(), envelope);
+      //encrypt the key
+      System.out.println("Encrypting key...");
+      encryptedKey.encrypt(ekxec);
+   }
+
+   private EncryptedKey createEncryptedKey() throws Exception {
+      //Create an AES key
+      KeyGenerator kg = KeyGenerator.getInstance("AES");
+      //initialize the key size
+      kg.init(128);
+      //generate the key
+      System.out.println("Generating the AES key...");
+      this.key = kg.generateKey();
+      //wrap the key to ToBeEncryptedKey
+      ToBeEncryptedKey tbeKey = new ToBeEncryptedKey(key);
+      //create RSA EncryptionMethod
+      EncryptionMethod ekem = fac.newEncryptionMethod(EncryptionMethod.RSA_1_5, null, null);
+      this.kfac = KeyInfoFactory.getInstance("DOM");
+      KeyName ekn = kfac.newKeyName("Bob");
+      KeyInfo eki = kfac.newKeyInfo(Collections.singletonList(ekn));
+      EncryptedKey ek = fac.newEncryptedKey(tbeKey, //the secret key to be encrypted
+              ekem, //the encryption method is RSA_1_5
+              eki, //the key info, with only keyname in it
+              null, //encryption properties
+              null, //a list of DataReference or KeyReference
+              null, //the ID of EncryptedKey element, encrypted secret key ID is Alice
+              "Bob", //the carried key name
+              null);              //the recipient
+      return ek;
+   }
+
+   private void writeDoc(Node doc, String filename) throws Exception {
+      // Prepare the DOM document for writing
+      Source source = new DOMSource(doc);
+
+      // Prepare the output file
+      File file = new File(filename);
+      Result result = new StreamResult(file);
+
+      // Write the DOM document to the file
+      Transformer xformer = TransformerFactory.newInstance().newTransformer();
+      xformer.transform(source, result);
+   }
+}

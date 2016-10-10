@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping>
+    <class name="com.javatech.payment.mapping.PaymentRequest">
+        <map-to xml="paymentRequest" ns-uri="http://payment.javatech.com/ws/schema/oss"/>
+                     
+        <field name="amount" type="string">
+            <bind-xml name="amount" node="element"/>
+        </field>
+           
+        <field name="cardNumber" type="string">
+            <bind-xml name="cardNumber" node="element"/>
+        </field>
+           
+        <field name="expirationDate" type="string">
+            <bind-xml name="expirationDate" node="element"/>
+        </field>
+           
+        <field name="securityCode" type="string">
+            <bind-xml name="securityCode" node="element"/>
+        </field>
+        <field name="nameOnCard" type="string">
+            <bind-xml name="nameOnCard" node="element"/>
+        </field>
+           
+    </class>
+        
+    <class name="com.javatech.payment.mapping.PaymentResponse">
+        <map-to xml="paymentResponse" ns-uri="http://payment.javatech.com/ws/schema/oss"/>
+      
+        <field name="code" type="string">
+            <bind-xml name="code" node="element"/>
+        </field>
+           
+        <field name="description" type="string">
+            <bind-xml name="description" node="element"/>
+        </field>
+      
+        <field name="referenceCode" type="string">
+            <bind-xml name="referenceCode" node="element"/>
+        </field>
+        
+    </class>
+</mapping>

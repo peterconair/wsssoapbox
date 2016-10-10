@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AllNetworkConfigs>
+	<NetworkConfig isNDIS="0" canbeDelete="0" isPreferred="1"><ConfigFileName>DTAC Thailand</ConfigFileName><UserName/><Password/><LoginNumber>*99#</LoginNumber><AutoGetAPN>0</AutoGetAPN><APN>www.dtac.co.th</APN><AutoGetDNS>1</AutoGetDNS><MainDNS/><StandbyDNS/><AutoGetPDP>1</AutoGetPDP><PDPAddress/><PDPType>IP</PDPType><AuthType>PAP</AuthType><AskUserAndPwd>0</AskUserAndPwd><SaveUserAndPwd>0</SaveUserAndPwd></NetworkConfig><NetworkConfig isNDIS="0" canbeDelete="0" isPreferred="0"><ConfigFileName>AIS GSM Thailand</ConfigFileName><UserName/><Password/><LoginNumber>*99***1#</LoginNumber><AutoGetAPN>0</AutoGetAPN><APN>internet</APN><AutoGetDNS>1</AutoGetDNS><MainDNS/><StandbyDNS/><AutoGetPDP>1</AutoGetPDP><PDPAddress/><PDPType>IP</PDPType><AuthType>PAP</AuthType><AskUserAndPwd>0</AskUserAndPwd><SaveUserAndPwd>0</SaveUserAndPwd></NetworkConfig><NetworkConfig isNDIS="0" canbeDelete="0" isPreferred="0">
+		<ConfigFileName>TRUE MOVE</ConfigFileName>
+		<UserName>true</UserName>
+		<Password>true</Password>
+		<LoginNumber>*99***1#</LoginNumber>
+		<AutoGetAPN>0</AutoGetAPN>
+		<APN>internet</APN>
+		<AutoGetDNS>1</AutoGetDNS>
+		<MainDNS></MainDNS>
+		<StandbyDNS></StandbyDNS>
+		<AutoGetPDP>1</AutoGetPDP>
+		<PDPAddress>
+		</PDPAddress>
+		<PDPType>IP</PDPType>
+		<AuthType>PAP</AuthType>
+		<AskUserAndPwd>0</AskUserAndPwd>
+		<SaveUserAndPwd>0</SaveUserAndPwd>
+	</NetworkConfig>
+	<NetworkConfig isNDIS="0" canbeDelete="0" isPreferred="0">
+		<ConfigFileName>iFox-TOT 3G</ConfigFileName>
+		<UserName/>
+		<Password/>
+		<LoginNumber>*99***1#</LoginNumber>
+		<AutoGetAPN>0</AutoGetAPN>
+		<APN>internet</APN>
+		<AutoGetDNS>1</AutoGetDNS>
+		<MainDNS>0.0.0.0</MainDNS>
+		<StandbyDNS>0.0.0.0</StandbyDNS>
+		<AutoGetPDP>1</AutoGetPDP>
+		<PDPAddress>0.0.0.0</PDPAddress>
+		<PDPType>IP</PDPType>
+		<AuthType>PAP</AuthType>
+		<AskUserAndPwd>0</AskUserAndPwd>
+		<SaveUserAndPwd>0</SaveUserAndPwd>
+	</NetworkConfig>
+</AllNetworkConfigs>

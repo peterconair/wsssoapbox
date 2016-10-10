@@ -1,0 +1,297 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui" template="/main/home.xhtml">
+
+   <ui:define name="pageTitle">
+      <h:outputText value="Create Soap Messages" />
+   </ui:define>
+
+
+   <ui:define name="content">
+
+
+      <h:form id="messageForm">
+         <p:growl id="messagesGrowl" showDetail="true" showSummary="true" />
+         <p:outputPanel id="sendMessageOutPanel">
+            <p:panel id="sendMessagePanel">
+               <h:panelGrid columns="5" cellspacing="10">
+                  <p:commandButton id="sendMessageBtn" value="Send request" title="Send request to enpoiont"
+                                   actionListener="#{soapMessageForm.sendMessage}" 
+                                   update="@form" immediate="true">
+                  </p:commandButton>
+
+                  <p:commandButton value="Back" process="@this" title="Back for create new request"
+                                   oncomplete="confrmBackToMain.show();"/>
+
+                  <h:outputLabel value="Endpont Address :" />
+                  <p:inputText value="#{endpointBean.address}" size="50" >
+                     <p:ajax  >
+                        <f:setPropertyActionListener target="#{endpointBean.address}" value="#{endpointBean.address}" />
+                     </p:ajax>              
+                  </p:inputText>
+
+                  <h:outputFormat id="resonseTime" styleClass="panel-backgound" 
+                                  rendered="#{soapResponseBean.responseTime ne null}"
+                                  value="response time : #{soapResponseBean.responseTime} ms (#{soapResponseBean.mimeHeaders['Content-Length']} bytes)"          
+                                  title="resonse time"  />
+               </h:panelGrid>
+            </p:panel>
+
+            <p:blockUI block="sendMessagePanel" trigger="sendMessageBtn" >  
+               Sending<br />  
+               <p:graphicImage value="/resources/images/ajaxloading.gif"/>
+            </p:blockUI>
+
+            <p:confirmDialog widgetVar="confrmBackToMain" message="Are you want to create new request with other operation?"  
+                             appendToBody="true"                     
+                             header="Back to operaton detials page" severity="alert" >
+
+               <div style="text-align:  right">
+                  <h:panelGroup >
+                     <p:commandButton value="Yes" process="@this" oncomplete="confrmBackToMain.hide()"
+                                      action="#{soapMessageForm.backAction}" />
+                     <p:commandButton value="Cancel" onclick="confrmBackToMain.hide()" type="button" /> 
+                  </h:panelGroup>
+               </div>
+            </p:confirmDialog>
+
+            <p:confirmDialog widgetVar="confrmNewRequest" message="Are you want to create new request ?"  
+                             appendToBody="true"  closable="true"                   
+                             header="Create new SOAP request" severity="alert" >
+               <div style="text-align:  right">
+                  <h:panelGroup >
+                     <p:commandButton value="Yes" process="@this"  oncomplete="confrmNewRequest.hide();"
+                                      action="#{operationDeailsForm.createSOAPRequest()}" />
+                     <p:commandButton value="Cancel" onclick="confrmNewRequest.hide()" type="button" /> 
+                  </h:panelGroup>
+               </div>
+            </p:confirmDialog>
+
+
+
+            <p:outputPanel id="messagePanel">
+               <!-- Message tab -->   
+               <p:tabView id="messageTab" dynamic="true" 
+                          activeIndex="#{pageViewController.messageTabIndex}"  >
+                  <!-- Request Tab -->
+                  <p:tab title="Request" id="requestTab" titletip="SOAP request tab">
+
+                     <p:toolbar>
+                        <p:toolbarGroup id="requestToolBar" align="left" >
+
+
+                           <p:commandButton  title="Create new request message" 
+                                             oncomplete="confrmNewRequest.show();"    
+                                             icon="ui-icon ui-icon-document" >
+                           </p:commandButton>
+                           <p:commandButton  title="Save request message" process="@form" icon="ui-icon-disk" ajax="false">
+                              <p:fileDownload value="#{soapRequestDownload.file}" />
+                           </p:commandButton>
+                           <p:commandButton type="button" title="Print" icon="ui-icon-print" >
+                              <p:printer target="soapRequestMsgPrint" />  
+                           </p:commandButton>
+                           <h:outputText id="soapRequestMsgPrint"  
+                                         value="#{soapRequestBean.soapRequestDownload}"  rendered="false"/>
+
+                           <!-- tool menu for WS-Security -->
+                           <p:menuButton id="ws-securityMenu"  value="WS-Security" rendered="true">  
+                              <ui:remove>
+                                 <p:menuitem value="Timestamp" process="@this" onclick="timeToLiveDlg.show();" 
+                                             icon="ui-icon-disk" />  </ui:remove>
+                              <p:menuitem value="Username Token" process="@this" onclick="uNTokentDlg.show();"
+                                          icon="ui-icon-disk"/>  
+                              <p:menuitem value="Signature" process="@this" onclick="signatureDlg.show()"  
+                                          icon="ui-icon-close"/> 
+                              <p:menuitem value="Encryption" process="@this" onclick="encryptionDlg.show()" 
+                                          icon="ui-icon-arrowrefresh-1-w"/>   
+                              <p:menuitem value="SAML Authentication" process="@this" onclick="samlAuthDlg.show()" 
+                                          icon="ui-icon-extlink"/> 
+                              <p:menuitem value="SAML Autherization" process="@this" onclick="samlAuthzDlg.show()" 
+                                          icon="ui-icon-extlink"/> 
+                           </p:menuButton> 
+
+                        </p:toolbarGroup>
+                     </p:toolbar>
+
+
+
+                     <!-- Timestamp dialog -->
+                     <p:dialog header="Input Time-To-Live value" widgetVar="timeToLiveDlg" 
+                               resizable="false"> 
+                        <p:panel styleClass="panel-backgound">
+                           <p:fieldset legend="Time-To-Live">
+                              <h:panelGrid columns="3" style="margin-bottom:10px">  
+                                 <h:outputLabel for="timeToLive" value="Time To Live  " />  
+                                 <p:inputText id="timeToLive" value="#{tokenForm.tsBean.timeout}" /> 
+                                 <h:outputLabel  value="Second" /> 
+                              </h:panelGrid> 
+
+                           </p:fieldset >
+
+                           <br/>
+
+                           <div style="text-align:  right">
+                              <p:commandButton value="Add" action="#{tokenForm.addUsernameToken}"   oncomplete="timeToLiveDlg.hide();"  
+                                               update="outPutBox,pDigest,subRequestTab" >
+                                 <f:setPropertyActionListener value="true" target="#{tokenForm.secureHB.timeStamp}" />
+                                 <f:setPropertyActionListener value="#{tokenForm.tsBean.timeout}" target="#{tokenForm.tsBean.timeout}" />
+                              </p:commandButton>
+                              <p:commandButton value="Cancel"  type="button" onclick="timeToLiveDlg.hide();" /> 
+                           </div>
+                        </p:panel>
+                     </p:dialog>  
+
+                     <!-- Username Token dialog -->
+                     <p:dialog  widgetVar="uNTokentDlg" header="WS-Security - Username Token" 
+                                resizable="false" dynamic="true" >
+                        <ui:include src="/soap/security/usernameToken.xhtml"/>
+                     </p:dialog>
+
+                     <!-- Signature dialog -->
+                     <p:dialog  widgetVar="signatureDlg" header="WS-Security - Signature" 
+                                resizable="false" dynamic="true" >
+                        <ui:include src="/soap/security/signature.xhtml"/>
+                     </p:dialog>
+
+                     <!-- Encryption dialog -->
+                     <p:dialog  widgetVar="encryptionDlg" header="WS-Security - Encryption" 
+                                resizable="false" dynamic="true"  >
+                        <ui:include src="/soap/security/encryption.xhtml"/>
+                     </p:dialog>
+
+
+                     <!-- SAML Authentication Assertion dialog -->
+                     <p:dialog  widgetVar="samlAuthDlg" header="WS-Security - SAML Authentication Assertion" 
+                                resizable="false" dynamic="true" >
+                        <ui:include src="/soap/security/samlAuthentication.xhtml"/>
+                     </p:dialog>
+
+                     <!-- SAML Authorization Assertion dialog -->
+                     <p:dialog  widgetVar="samlAuthzDlg" header="WS-Security - SAML Authorization Assertion" 
+                                resizable="false" dynamic="true" >
+                        <ui:include src="/soap/security/samlAuthorization.xhtml"/>
+                     </p:dialog>
+
+
+                     <!--inner request tab -->
+                     <p:tabView id="subRequestTab" dynamic="true" style="padding: 0px 0px 0 1px;" 
+                                activeIndex="#{pageViewController.messageRequestTabIndex}">
+                        <p:ajax event="tabChange" listener="#{soapRequestTab.onTabChange}" update="subRequestTab"/>
+
+                        <!-- Form Tab -->
+                        <p:tab title="Form" id="requestFormTab"   >                       
+                           <ui:include src="/soap/req_form.xhtml" />
+                        </p:tab>
+                        <!-- End Form Tab -->
+
+                        <p:tab title="Raw" id="requestRAWTab">
+                           <ui:include src="/soap/req_raw.xhtml"/>
+                        </p:tab>
+
+                        <ui:remove >
+                           <!-- Outline Tab -->
+                           <p:tab title="Outline" id="requestOutlineTab" >
+                              <ui:include src="/soap/req_outline.xhtml"/>
+                           </p:tab>
+                           <!-- End Outline Tab -->
+                        </ui:remove>
+
+                        <!-- XML Tab -->
+                        <p:tab title="XML" id="requestXMLTab" >
+                           <ui:include src="/soap/req_xml.xhtml"/>
+                        </p:tab>
+                        <!-- End XML Tab -->
+
+                        <p:tab title="HTML Header"  id="headerTab" >
+                           <ui:include src="/soap/mimeHeader.xhtml"/>
+                        </p:tab>
+
+                        <p:tab title="Attachment"  id="attacheFileTab">
+                           <ui:include src="/soap/attachment.xhtml"/>
+                        </p:tab>
+
+                        <ui:remove>
+                           <p:tab title="WS-Security" id="WSSecurityTab" >
+                              <div style="padding: 5px 0px 0px 5px;">
+                                 <ui:include src="/soap/wssecurity.xhtml" />   
+                              </div>
+                           </p:tab>
+                        </ui:remove>
+
+
+                     </p:tabView>
+                  </p:tab>
+                  <!-- End Request tab -->
+
+
+                  <!--  Response Tab -->
+                  <p:tab title="Response" id="responseTab"  titletip="SOAP response message" 
+                         rendered="#{pageViewController.responseTab}" >
+
+                     <p:toolbar>
+                        <p:toolbarGroup id="responeToolBar" align="left" >
+                           <p:commandButton  title="Save request message"  icon="ui-icon-disk" ajax="false">
+                              <p:fileDownload value="#{soapResponseDownload.file}" />
+                           </p:commandButton>
+                           <p:commandButton type="button" title="Print" icon="ui-icon-print" >
+                              <p:printer target="soapResponseMessage" />  
+                           </p:commandButton>
+                           <!--for print respose messge -->
+                           <h:outputText id="soapResponseMessage" 
+                                         value="#{soapResponseBean.soapXMLFormat}" rendered="false"/>
+                           <!-- tool box for WS-Security -->
+                           <p:menuButton id="responseMenu" value="WS-Security" >  
+                              <p:menuitem value="Verify Message"  onclick="signatureDlg.show()"  
+                                          icon="ui-icon-close"/> 
+                              <p:menuitem value="Decryption" action="#{encryptionForm.decryptMesssage}"  update="subResponseTab"
+                                          icon="ui-icon-arrowrefresh-1-w"/>   
+
+                           </p:menuButton> 
+                        </p:toolbarGroup>
+                     </p:toolbar>
+
+
+
+                     <p:tabView id="subResponseTab"  dynamic="true"  
+                                activeIndex="#{pageViewController.messageResponseTabIndex}"> 
+                        <p:ajax event="tabChange" listener="#{soapResponseTab.onTabChange}" update="subResponseTab"/>
+                        <p:tab title="Raw" id="reponseRAWTab">
+                           <ui:include src="/soap/res_raw.xhtml"/>
+                        </p:tab>              
+
+                        <p:tab title="Pretty XML" id="reponsePretyXMLTab">
+                           <ui:include src="/soap/res_prety.xhtml"/>
+                        </p:tab>
+
+                        <ui:remove>
+                           <p:tab title="Outline" id="responseOutlineTab" rendered="#{responseOutlineTab}">
+                              <ui:include src="/soap/res_outline.xhtml"/>
+                           </p:tab>
+                        </ui:remove>
+
+                        <p:tab title="XML" id="responseXMLTab">
+                           <ui:include src="/soap/res_xml.xhtml"/>
+                        </p:tab>
+
+                        <p:tab title="HTML Header"  id="responseHeaderTab">
+                           <ui:include src="/soap/res_mimeHeader.xhtml"/>
+                        </p:tab>
+
+                        <p:tab title="Attache File" id="attacheFileResponseTab">
+                           <ui:include src="/soap/res_attachment.xhtml"/>
+                        </p:tab>
+                     </p:tabView>
+                  </p:tab>
+                  <!-- End Response Tab -->
+
+               </p:tabView>
+               <!-- End message tab -->
+            </p:outputPanel>
+         </p:outputPanel>
+      </h:form>
+   </ui:define>
+</ui:composition>
